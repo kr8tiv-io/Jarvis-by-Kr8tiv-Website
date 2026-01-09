@@ -608,7 +608,8 @@
         @media (max-width: 768px) {
             .solana-features {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 24px;
+                /* Reduced gap for tighter mobile layout */
             }
 
             .solana-watermark {
@@ -618,20 +619,36 @@
         }
 
         /* --- NEW SOLANA CARD DESIGN (JARVIS) --- */
+        .solana-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            /* Reduced from 40px for tighter agency feel */
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
         .solana-card {
             position: relative;
-            height: 320px;
-            background: rgba(255, 255, 255, 0.85);
-            /* Premium glass opacity */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            /* Subtle border */
+            min-height: 280px;
+            /* Reduced height to reduce whitespace */
+            /* Ultra-Premium C-Through Glass */
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            /* Reduced blur for clarity */
+            -webkit-backdrop-filter: blur(8px);
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            /* Subtle structure */
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            /* Top highlight */
             border-radius: 24px;
-            padding: 0;
-            /* Layout handled by inner */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            /* Minimal shadow initially */
+
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            /* Expo easing for premium feel */
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -640,11 +657,36 @@
             text-align: center;
         }
 
+        /* Sheen Effect */
+        .solana-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-25deg);
+            transition: none;
+            /* Reset for instant return */
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .solana-card:hover::before {
+            left: 150%;
+            transition: left 0.6s ease;
+            /* Fast, sharp wipe */
+        }
+
         .solana-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-            border-color: rgba(57, 255, 20, 0.3);
-            /* Green accent on hover */
+            transform: translateY(-12px) scale(1.02);
+            /* Increased lift */
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 30px rgba(57, 255, 20, 0.15);
+            /* Stronger glow */
+            border-color: rgba(57, 255, 20, 0.5);
+            background: radial-gradient(circle at center, rgba(57, 255, 20, 0.05), rgba(255, 255, 255, 0.08));
+            /* Reactive core glow */
         }
 
         .solana-card-inner {
@@ -656,7 +698,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 20px;
+            /* Reduced padding for tighter agency feel */
         }
 
         /* Internal Grid/Haze */
@@ -703,7 +746,8 @@
             font-size: 24px;
             font-weight: 600;
             color: #000;
-            margin-top: 24px;
+            margin-top: 12px;
+            /* Reduced from 24px to pull text closer to icon */
             margin-bottom: 8px;
             position: relative;
             z-index: 10;
