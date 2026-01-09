@@ -2474,9 +2474,13 @@
         }
 
         /* Light eyebrow for sections with video backgrounds */
-        .section-privacy .eyebrow,
-        .section-public .eyebrow {
+        .section-privacy .eyebrow {
             color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Remove Privacy Section Top/Bottom Fades */
+        .video-overlay-gradient {
+            display: none;
         }
 
         @media (max-width: 900px) {
@@ -2540,16 +2544,15 @@
             font-family: var(--font-display);
             font-size: clamp(48px, 4vw, 72px);
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.95);
+            color: #111;
             margin-bottom: 24px;
             line-height: 1.1;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .public-subhead {
             font-family: var(--font-body);
             font-size: 24px;
-            color: rgba(255, 255, 255, 0.8);
+            color: #666;
             margin-bottom: 60px;
         }
 
@@ -2913,6 +2916,63 @@
             border-radius: 50%;
             background: radial-gradient(circle, #ffffff 30%, #e0e0e0 100%);
             border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Token Rings (Orbiting Labels) */
+        .token-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .ring-outer {
+            width: 480px;
+            height: 480px;
+            border-color: rgba(0, 0, 0, 0.08);
+            animation: spinRingSlow 40s linear infinite;
+        }
+
+        .ring-middle {
+            width: 380px;
+            height: 380px;
+            border-color: rgba(57, 255, 20, 0.15);
+            border-style: dashed;
+            animation: spinRingSlow 30s linear infinite reverse;
+        }
+
+        .ring-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(0, 0, 0, 0.4);
+            background: #FFFFFF;
+            padding: 4px 12px;
+            border-radius: 100px;
+            white-space: nowrap;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .ring-middle .ring-label {
+            color: #39FF14;
+            background: rgba(57, 255, 20, 0.05);
+            border-color: rgba(57, 255, 20, 0.2);
+        }
+
+        @keyframes spinRingSlow {
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
 
         /* Nodes / Connections */
@@ -5038,7 +5098,17 @@
 
                     <!-- Right: Visual -->
                     <div class="token-visual" id="tokenVisual">
-                        <!-- The Crystal Token -->
+                        <!-- Additional Ring: Protocol Proceeds (Outer) -->
+                        <div class="token-ring ring-outer" id="ringProtocol">
+                            <span class="ring-label">Protocol Proceeds</span>
+                        </div>
+
+                        <!-- Additional Ring: APIs (Middle) -->
+                        <div class="token-ring ring-middle" id="ringAPIs">
+                            <span class="ring-label">APIs</span>
+                        </div>
+
+                        <!-- The Crystal Token (Core) -->
                         <div class="chrome-token" id="chromeToken"></div>
 
                         <!-- Floating Nodes -->
@@ -5052,19 +5122,22 @@
             </div>
         </section>
 
-        <!-- SECTION 16: COMMUNITY (BUILDERS) -->
+        <!-- SECTION 16: $KR-8-TIV TOKEN ECOSYSTEM -->
         <section class="section-community" id="sectionCommunity">
             <div class="community-container">
                 <!-- Text -->
                 <div class="comm-content">
-                    <span class="comm-eyebrow" id="commEyebrow">Community</span>
-                    <h2 class="comm-headline" id="commHeadline">Small team.<br>Big vision.</h2>
-                    <p class="comm-subhead" id="commSubhead">Built in Costa Rica. Open source at heart. Native to
-                        Solana.</p>
+                    <span class="comm-eyebrow" id="commEyebrow">$KR-8-TIV Token</span>
+                    <h2 class="comm-headline" id="commHeadline">Utility that<br>compounds.</h2>
+                    <p class="comm-subhead" id="commSubhead">
+                        Token-gated access to premium front-end apps. Stake for revenue share from Uplift APIs and
+                        future ecosystem products. Additional yield opportunities on the horizon. Eventual DAO
+                        governance and financial utility. An expanding ecosystem designed to grow with you.
+                    </p>
 
                     <div class="btn-group" id="commBtns" style="justify-content: flex-start;">
-                        <a href="#" class="btn-primary">Join Discord</a>
-                        <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="btn-ghost">Contribute</a>
+                        <a href="https://bags.fm" class="btn-primary" target="_blank">Buy on Bags.fm</a>
+                        <a href="https://x.com/jarvis_kr8tiv" class="btn-ghost" target="_blank">Join X Community</a>
                     </div>
                 </div>
 
