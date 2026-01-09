@@ -617,6 +617,169 @@
             }
         }
 
+        /* --- NEW SOLANA CARD DESIGN (JARVIS) --- */
+        .solana-card {
+            position: relative;
+            height: 320px;
+            background: rgba(255, 255, 255, 0.85);
+            /* Premium glass opacity */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            /* Subtle border */
+            border-radius: 24px;
+            padding: 0;
+            /* Layout handled by inner */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .solana-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+            border-color: rgba(57, 255, 20, 0.3);
+            /* Green accent on hover */
+        }
+
+        .solana-card-inner {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        /* Internal Grid/Haze */
+        .card-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .card-haze {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.8), transparent 70%);
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .card-accent {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #39FF14;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+            z-index: 5;
+        }
+
+        .solana-card:hover .card-accent {
+            transform: scaleX(1);
+        }
+
+        /* Typography override for card context */
+        .solana-card h3 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .solana-card p {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 400;
+            color: #666;
+            line-height: 1.5;
+            max-width: 240px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* SVG Styling */
+        .stat-glyph-premium {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 8px;
+            overflow: visible;
+        }
+
+        /* Animations */
+        .speed-arc {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .solana-card:hover .speed-arc {
+            stroke-dashoffset: 0;
+        }
+
+        .pulse-ring {
+            transform-origin: 40px 40px;
+            /* Explicit origin */
+            animation: pulseRing 2s infinite linear;
+            opacity: 0;
+        }
+
+        .solana-card:hover .pulse-ring {
+            opacity: 1;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .hero-chip {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .solana-card:hover .hero-chip {
+            transform: translateY(-5px);
+        }
+
+        .shield-pulse {
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .solana-card:hover .shield-pulse {
+            opacity: 1;
+            filter: drop-shadow(0 0 5px #39FF14);
+        }
+
         /* -----------------------------------------------------------
            SECTION 2: THE SPLIT
         ----------------------------------------------------------- */
@@ -1530,7 +1693,7 @@
 
         .data-stream {
             position: absolute;
-            background: linear-gradient(90deg, transparent, #39FF14, transparent);
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.15), transparent);
             opacity: 0;
             filter: blur(1px);
         }
@@ -3961,18 +4124,36 @@
             margin-bottom: 80px;
         }
 
-        /* 4. Glass Panel Modules */
+        /* 4. Glass Panel Modules (Modernized) */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 24px;
-            padding: 24px 20px;
-            /* Tighter padding */
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 32px 24px;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.04),
+                inset 0 0 30px rgba(255, 255, 255, 0.8);
+            /* EXPLICIT transition to avoid fighting GSAP opacity/transform */
+            transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             position: relative;
             overflow: hidden;
+        }
+
+        .glass-panel h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .glass-panel p {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
         }
 
         /* Panel-specific grid overrides */
@@ -4594,124 +4775,93 @@
                 <p class="solana-subhead" id="solSubhead">Low fees. Fast execution. Always-on markets.</p>
 
                 <div class="solana-features">
-                    <!-- SPEED: Linear Accelerator -->
-                    <div class="feature-item glass-panel" id="statSpeed">
-                        <!-- Star Track Rails -->
-                        <div class="star-rail star-t"></div>
-                        <div class="star-rail star-r"></div>
-                        <div class="star-rail star-b"></div>
-                        <div class="star-rail star-l"></div>
+                    <!-- SPEED: Jarvis Accelerator -->
+                    <div class="feature-item solana-card" id="statSpeed">
+                        <div class="solana-card-inner">
+                            <div class="card-grid"></div>
+                            <div class="card-accent"></div>
+                            <div class="card-haze"></div>
 
-                        <!-- Grid Background + Scanning Beams -->
-                        <div class="bg-grid-faint"></div>
-                        <div class="grid-dataflow">
-                            <div class="data-stream ds-h" style="top: 30%;"></div>
-                            <div class="data-stream ds-v" style="left: 40%;"></div>
+                            <div class="panel-visual">
+                                <svg class="stat-glyph-premium" viewBox="0 0 80 80" fill="none">
+                                    <defs>
+                                        <linearGradient id="gradSpeed" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#39FF14;stop-opacity:0" />
+                                            <stop offset="50%" style="stop-color:#39FF14;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#39FF14;stop-opacity:0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Orbit Track -->
+                                    <circle cx="40" cy="40" r="30" stroke="#000" stroke-opacity="0.1" stroke-width="1.5"
+                                        stroke-dasharray="4 4" />
+                                    <!-- Speed Arc -->
+                                    <path d="M15 40 A 25 25 0 0 1 65 40" stroke="url(#gradSpeed)" stroke-width="2"
+                                        stroke-linecap="round" class="speed-arc" />
+                                    <!-- Center Core -->
+                                    <circle cx="40" cy="40" r="4" fill="#111" />
+                                    <circle cx="40" cy="40" r="12" stroke="#39FF14" stroke-opacity="0.5"
+                                        stroke-width="1" class="pulse-ring" />
+                                </svg>
+                            </div>
+                            <h3>Speed</h3>
+                            <p>Block times measured in milliseconds.</p>
                         </div>
-
-                        <div class="panel-visual">
-                            <svg class="stat-glyph" viewBox="0 0 64 64" fill="none">
-                                <!-- Guide Rails -->
-                                <path d="M4 20H60" stroke="currentColor" stroke-opacity="0.1" stroke-width="1" />
-                                <path d="M4 44H60" stroke="currentColor" stroke-opacity="0.1" stroke-width="1" />
-
-                                <!-- Accelerator Segments -->
-                                <rect x="8" y="24" width="2" height="16" fill="currentColor" fill-opacity="0.2" />
-                                <rect x="24" y="24" width="2" height="16" fill="currentColor" fill-opacity="0.2" />
-                                <rect x="40" y="24" width="2" height="16" fill="currentColor" fill-opacity="0.2" />
-                                <rect x="56" y="24" width="2" height="16" fill="currentColor" fill-opacity="0.2" />
-
-                                <!-- High Energy Particle -->
-                                <g class="accel-group">
-                                    <rect x="0" y="30" width="12" height="4" fill="#39FF14" rx="2"
-                                        class="accel-particle" />
-                                    <path d="M-8 32H0" stroke="#39FF14" stroke-width="2" opacity="0.5"
-                                        class="accel-trail" />
-                                </g>
-                            </svg>
-                        </div>
-                        <h3>Speed</h3>
-                        <p>Block times measured in milliseconds.</p>
                     </div>
 
-                    <!-- COST: Quantum Compression -->
-                    <div class="feature-item glass-panel" id="statCost">
-                        <!-- Star Track Rails -->
-                        <div class="star-rail star-t"></div>
-                        <div class="star-rail star-r"></div>
-                        <div class="star-rail star-b"></div>
-                        <div class="star-rail star-l"></div>
+                    <!-- COST: Micro-Mesh -->
+                    <div class="feature-item solana-card" id="statCost">
+                        <div class="solana-card-inner">
+                            <div class="card-grid"></div>
+                            <div class="card-accent"></div>
+                            <div class="card-haze"></div>
 
-                        <!-- Grid Background + Scanning Beams -->
-                        <div class="bg-grid-faint"></div>
-                        <div class="grid-dataflow">
-                            <div class="data-stream ds-h" style="top: 50%; animation-delay: 1.5s;"></div>
-                            <div class="data-stream ds-v" style="left: 60%; animation-delay: 2.5s;"></div>
+                            <div class="panel-visual">
+                                <svg class="stat-glyph-premium" viewBox="0 0 80 80" fill="none">
+                                    <!-- Stacked Plates -->
+                                    <path d="M25 55 L55 55 L60 50 L30 50 Z" fill="#111" fill-opacity="0.05" />
+                                    <path d="M25 45 L55 45 L60 40 L30 40 Z" fill="#111" fill-opacity="0.1" />
+                                    <path d="M25 35 L55 35 L60 30 L30 30 Z" fill="#111" fill-opacity="0.2" />
+                                    <!-- Hero Coin -->
+                                    <path d="M25 25 L55 25 L60 20 L30 20 Z" fill="#39FF14" class="hero-chip" />
+                                    <path d="M30 20 L60 20" stroke="#39FF14" stroke-width="1" stroke-opacity="0.6" />
+                                </svg>
+                            </div>
+                            <h3>Cost</h3>
+                            <p>Fractions of a penny per trade.</p>
                         </div>
-
-                        <div class="panel-visual">
-                            <svg class="stat-glyph" viewBox="0 0 64 64" fill="none">
-                                <!-- Base Platform -->
-                                <path d="M12 56H52" stroke="currentColor" stroke-width="2" stroke-opacity="0.3" />
-
-                                <!-- The Stack -->
-                                <g class="stack-group">
-                                    <!-- Top Blocks (Disappearing) -->
-                                    <rect x="20" y="4" width="24" height="6" rx="2" fill="currentColor"
-                                        fill-opacity="0.1" class="stack-block b1" />
-                                    <rect x="20" y="14" width="24" height="6" rx="2" fill="currentColor"
-                                        fill-opacity="0.1" class="stack-block b2" />
-                                    <rect x="20" y="24" width="24" height="6" rx="2" fill="currentColor"
-                                        fill-opacity="0.1" class="stack-block b3" />
-                                    <rect x="20" y="34" width="24" height="6" rx="2" fill="currentColor"
-                                        fill-opacity="0.1" class="stack-block b4" />
-
-                                    <!-- Final Compressed Block -->
-                                    <rect x="20" y="44" width="24" height="6" rx="2" fill="#39FF14"
-                                        class="stack-final" />
-                                </g>
-                            </svg>
-                        </div>
-                        <h3>Cost</h3>
-                        <p>Fractions of a penny per trade.</p>
                     </div>
 
-                    <!-- UPTIME: Perpetual Reactor -->
-                    <div class="feature-item glass-panel" id="statUptime">
-                        <!-- Star Track Rails -->
-                        <div class="star-rail star-t"></div>
-                        <div class="star-rail star-r"></div>
-                        <div class="star-rail star-b"></div>
-                        <div class="star-rail star-l"></div>
+                    <!-- UPTIME: Shield Reactor -->
+                    <div class="feature-item solana-card" id="statUptime">
+                        <div class="solana-card-inner">
+                            <div class="card-grid"></div>
+                            <div class="card-accent"></div>
+                            <div class="card-haze"></div>
 
-                        <!-- Grid Background + Scanning Beams -->
-                        <div class="bg-grid-faint"></div>
-                        <div class="grid-dataflow">
-                            <div class="data-stream ds-h" style="top: 70%; animation-delay: 3s;"></div>
-                            <div class="data-stream ds-v" style="left: 25%; animation-delay: 4s;"></div>
+                            <div class="panel-visual">
+                                <svg class="stat-glyph-premium" viewBox="0 0 80 80" fill="none">
+                                    <defs>
+                                        <filter id="glowGreen">
+                                            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur" />
+                                                <feMergeNode in="SourceGraphic" />
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                    <!-- Shield Hex -->
+                                    <path d="M40 10 L66 25 V55 L40 70 L14 55 V25 Z" stroke="#000" stroke-opacity="0.1"
+                                        stroke-width="1.5" />
+                                    <!-- Inner Pulse -->
+                                    <path d="M40 20 L58 30 V50 L40 60 L22 50 V30 Z" stroke="#39FF14" stroke-width="2"
+                                        fill="none" class="shield-pulse" filter="url(#glowGreen)" />
+                                    <!-- Core Dot -->
+                                    <circle cx="40" cy="40" r="3" fill="#39FF14" />
+                                </svg>
+                            </div>
+                            <h3>Uptime</h3>
+                            <p>Markets that never sleep.</p>
                         </div>
-
-                        <div class="panel-visual">
-                            <svg class="stat-glyph" viewBox="0 0 64 64" fill="none">
-                                <!-- Outer Stator -->
-                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-opacity="0.1"
-                                    stroke-width="1" />
-                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-opacity="0.3"
-                                    stroke-width="2" stroke-dasharray="10 48" class="reactor-outer" />
-
-                                <!-- Middle Rotor -->
-                                <circle cx="32" cy="32" r="18" stroke="currentColor" stroke-opacity="0.15"
-                                    stroke-width="4" stroke-dasharray="24 32" class="reactor-mid" />
-
-                                <!-- Core -->
-                                <circle cx="32" cy="32" r="6" fill="#39FF14" class="reactor-core">
-                                    <animate attributeName="opacity" values="0.8;1;0.8" dur="0.5s"
-                                        repeatCount="indefinite" />
-                                </circle>
-                            </svg>
-                        </div>
-                        <h3>Uptime</h3>
-                        <p>Markets that never sleep.</p>
                     </div>
                 </div>
 
@@ -5396,95 +5546,259 @@ jarvis start --daemon`
                     <div class="token-content">
                         <span class="token-eyebrow" id="tokEyebrow">Community Token</span>
                         <h2 class="token-headline" id="tokHeadline">Fair launch.<br>Community aligned.</h2>
-                        <p class="token-subhead" id="tokSubhead">$KR8TIV on Solana — launched on Bags.fm.</p>
+                        <p class="token-subhead" id="tokSubhead" style="font-family: 'Clash Display', sans-serif;">
+                            $KR8TIV on Solana — launched on Bags.fm.</p>
                         <div class="token-micro" id="tokMicro">No VCs. No presale. Built by believers.</div>
 
-                        <div class="btn-group" id="tokBtnGroup" style="justify-content: flex-start;">
-                            <a href="https://bags.fm" class="btn-primary" target="_blank">Buy on Bags.fm</a>
-                            <a href="#" class="btn-ghost" target="_blank">View Chart</a>
+                        <div class="btn-group" id="tokBtnGroup"
+                            style="justify-content: flex-start; margin-top: 20px; margin-bottom: 20px;">
+                            <a href="https://www.dextools.io/app/en/solana/pairs" class="btn-ghost" target="_blank"
+                                style="font-family: 'Clash Display', sans-serif; color: #111; border-color: rgba(0,0,0,0.2); font-weight: 600;">View
+                                Chart</a>
                         </div>
 
-                        <div style="margin-top: 40px; opacity: 0.6;" id="tokLogos">
+                        <div class="token-powered" id="tokLogos" style="margin-top: 10px;">
                             <span
-                                style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #999; display: block; margin-bottom: 10px;">Powered
+                                style="font-family: 'Clash Display', sans-serif; font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 20px;">Powered
                                 By</span>
-                            <div style="display: flex; gap: 20px; align-items: center; justify-content: flex-start;">
-                                <!-- Simple text representations for simplicity or SVG -->
-                                <span style="font-weight: 700; color: #333;">SOLANA</span>
-                                <span style="width: 1px; height: 16px; background: #ddd;"></span>
-                                <span style="font-weight: 700; color: #333;">BAGS</span>
+                            <div style="display: flex; gap: 40px; align-items: flex-start;">
+                                <!-- Solana -->
+                                <a href="https://solana.com" target="_blank"
+                                    style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s;">
+                                    <img src="10.png" alt="Solana"
+                                        style="width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.1); object-fit: cover;">
+                                    <span
+                                        style="font-size: 11px; font-weight: 700; color: #333; letter-spacing: 0.5px;">SOLANA</span>
+                                </a>
+                                <!-- Bags -->
+                                <a href="https://bags.fm" target="_blank"
+                                    style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s;">
+                                    <img src="bags-icon.png" alt="Bags"
+                                        style="width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.1); object-fit: cover;">
+                                    <span
+                                        style="font-size: 11px; font-weight: 700; color: #333; letter-spacing: 0.5px;">BAGS</span>
+                                </a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right: Visual -->
-                    <div class="token-visual" id="tokenVisual">
-                        <!-- Additional Ring: Protocol Proceeds (Outer) -->
-                        <div class="token-ring ring-outer" id="ringProtocol">
-                            <span class="ring-label">Protocol Proceeds</span>
+                    <div class="token-visual" id="tokenVisual" style="position: relative; overflow: visible;">
+                        <style>
+                            /* Engine Core Styles - REFINED */
+                            #tokenEngineCanvas {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 120%;
+                                height: 120%;
+                                z-index: 1;
+                                pointer-events: none;
+                            }
+
+                            .engine-node {
+                                position: absolute;
+                                z-index: 10;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                                cursor: pointer;
+                                transition: transform 0.1s ease-out;
+                                /* Faster for magnet effect */
+                                will-change: transform;
+                            }
+
+                            /* Dot Polish */
+                            .node-dot {
+                                width: 9px;
+                                height: 9px;
+                                background: #39FF14;
+                                border-radius: 50%;
+                                box-shadow: 0 0 12px rgba(57, 255, 20, 0.6);
+                                position: relative;
+                                flex-shrink: 0;
+                            }
+
+                            .node-dot::after {
+                                content: '';
+                                position: absolute;
+                                top: -5px;
+                                left: -5px;
+                                width: 19px;
+                                height: 19px;
+                                border: 1px solid rgba(57, 255, 20, 0.4);
+                                border-radius: 50%;
+                                animation: pulseRing 3s infinite;
+                            }
+
+                            @keyframes pulseRing {
+                                0% {
+                                    transform: scale(0.5);
+                                    opacity: 1;
+                                }
+
+                                100% {
+                                    transform: scale(1.8);
+                                    opacity: 0;
+                                }
+                            }
+
+                            /* Card Polish */
+                            .node-card {
+                                background: rgba(255, 255, 255, 0.9);
+                                backdrop-filter: blur(16px);
+                                padding: 8px 14px;
+                                border-radius: 6px;
+                                border: 1px solid rgba(0, 0, 0, 0.06);
+                                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+                                display: flex;
+                                flex-direction: column;
+                                opacity: 0.9;
+                                transition: all 0.2s;
+                                min-width: 90px;
+                            }
+
+                            .engine-node:hover .node-card {
+                                opacity: 1;
+                                transform: scale(1.02);
+                                box-shadow: 0 8px 30px rgba(57, 255, 20, 0.15);
+                                border-color: rgba(57, 255, 20, 0.3);
+                            }
+
+                            /* Unified Typography */
+                            .nc-title {
+                                font-family: 'Clash Display', sans-serif;
+                                font-size: 10px;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                                color: #888;
+                                letter-spacing: 0.8px;
+                                margin-bottom: 2px;
+                            }
+
+                            .nc-val {
+                                font-family: 'Clash Display', sans-serif;
+                                font-size: 13px;
+                                font-weight: 600;
+                                color: #111;
+                                letter-spacing: -0.2px;
+                                white-space: nowrap;
+                            }
+
+                            /* Positioning */
+                            .node-stake {
+                                top: 12%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                flex-direction: column;
+                                gap: 10px;
+                            }
+
+                            .node-apis {
+                                top: 38%;
+                                right: -2%;
+                                flex-direction: row-reverse;
+                            }
+
+                            .node-fund {
+                                bottom: 18%;
+                                right: 8%;
+                                flex-direction: row-reverse;
+                            }
+
+                            .node-rev {
+                                bottom: 18%;
+                                left: 8%;
+                            }
+
+                            .node-yield {
+                                top: 38%;
+                                left: -2%;
+                            }
+
+                            /* Core Label */
+                            .node-core {
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                /* Start center */
+                                pointer-events: none;
+                                z-index: 5;
+                                text-align: center;
+                                justify-content: center;
+                            }
+
+                            .core-text {
+                                font-family: 'Clash Display', 'Inter', sans-serif;
+                                font-size: 30px;
+                                font-weight: 600;
+                                text-transform: none;
+                                letter-spacing: 0px;
+                                color: #000;
+                                line-height: 1.1;
+                                text-shadow: 0 0 30px rgba(255, 255, 255, 1);
+                            }
+                        </style>
+
+                        <!-- The Canvas Engine -->
+                        <canvas id="tokenEngineCanvas"></canvas>
+
+                        <!-- 0. Core Label (New) -->
+                        <div class="engine-node node-core">
+                            <div class="core-text">Jarvis<br>Decentralized<br>Fund</div>
                         </div>
 
-                        <!-- Additional Ring: APIs (Middle) -->
-                        <div class="token-ring ring-middle" id="ringAPIs">
-                            <span class="ring-label">APIs</span>
+                        <!-- 1. Stake (Top) -->
+                        <div class="engine-node node-stake" data-id="stake">
+                            <div class="node-card">
+                                <span class="nc-title">Input</span>
+                                <span class="nc-val">Stake Token</span>
+                            </div>
+                            <div class="node-dot"></div>
                         </div>
 
-                        <!-- The Crystal Token (Core) -->
-                        <div class="chrome-token" id="chromeToken"></div>
+                        <!-- 2. APIs (Right) -->
+                        <div class="engine-node node-apis" data-id="apis">
+                            <div class="node-dot"></div>
+                            <div class="node-card">
+                                <span class="nc-title">Utility</span>
+                                <span class="nc-val">API Revenue</span>
+                            </div>
+                        </div>
 
-                        <!-- Floating Nodes -->
-                        <div class="connection-node" id="node1" style="top: 20%; left: 80%;">$</div>
-                        <div class="connection-node" id="node2" style="top: 70%; left: 10%;">Gov</div>
-                        <div class="connection-node" id="node3" style="top: 80%; left: 70%;">AI</div>
+                        <!-- 3. Fund (Bottom Right) -->
+                        <div class="engine-node node-fund" data-id="fund">
+                            <div class="node-dot"></div>
+                            <div class="node-card">
+                                <span class="nc-title">Growth</span>
+                                <span class="nc-val">Treasury</span>
+                            </div>
+                        </div>
 
-                        <!-- Lines (Visual only, CSS borders/rotation would be complex, keeping minimal for clean look or added via JS mostly) -->
+                        <!-- 4. Revenue (Bottom Left) -->
+                        <div class="engine-node node-rev" data-id="rev">
+                            <div class="node-dot"></div>
+                            <div class="node-card">
+                                <span class="nc-title">Value</span>
+                                <span class="nc-val">Protocol Rev</span>
+                            </div>
+                        </div>
+
+                        <!-- 5. Yield (Left) -->
+                        <div class="engine-node node-yield" data-id="yield">
+                            <div class="node-dot"></div>
+                            <div class="node-card">
+                                <span class="nc-title">Reward</span>
+                                <span class="nc-val">Staker Yield</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 16: $KR-8-TIV TOKEN ECOSYSTEM -->
-        <section class="section-community" id="sectionCommunity">
-            <div class="community-container">
-                <!-- Text -->
-                <div class="comm-content">
-                    <span class="comm-eyebrow" id="commEyebrow">$KR-8-TIV Token</span>
-                    <h2 class="comm-headline" id="commHeadline">Utility that<br>compounds.</h2>
-                    <p class="comm-subhead" id="commSubhead">
-                        Token-gated access to premium front-end apps. Stake for revenue share from Uplift APIs and
-                        future ecosystem products. Additional yield opportunities on the horizon. Eventual DAO
-                        governance and financial utility. An expanding ecosystem designed to grow with you.
-                    </p>
 
-                    <div class="btn-group" id="commBtns" style="justify-content: flex-start;">
-                        <a href="https://bags.fm" class="btn-primary" target="_blank">Buy on Bags.fm</a>
-                        <a href="https://x.com/jarvis_kr8tiv" class="btn-ghost" target="_blank">Join X Community</a>
-                    </div>
-                </div>
-
-                <!-- Visual (Hex Mosaic) -->
-                <div class="comm-visual" id="commVisual">
-                    <div class="hex-grid" id="hexGrid">
-                        <!-- Layer 1: Center Active -->
-                        <div class="hex-node active" style="top: 40%; left: 45%;"></div>
-
-                        <!-- Layer 2: Ring 1 -->
-                        <div class="hex-node" style="top: 25%; left: 45%;"></div>
-                        <div class="hex-node" style="top: 55%; left: 45%;"></div>
-                        <div class="hex-node active" style="top: 32%; left: 33%;"></div>
-                        <div class="hex-node" style="top: 48%; left: 33%;"></div>
-                        <div class="hex-node active" style="top: 32%; left: 57%;"></div>
-                        <div class="hex-node" style="top: 48%; left: 57%;"></div>
-
-                        <!-- Layer 3: Ring 2 (Outliers) -->
-                        <div class="hex-node active" style="top: 10%; left: 45%;"></div>
-                        <div class="hex-node" style="top: 70%; left: 45%;"></div>
-                        <div class="hex-node" style="top: 40%; left: 21%;"></div>
-                        <div class="hex-node active" style="top: 40%; left: 69%;"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
 
         <!-- SECTION 17: FINAL CTA + FOOTER -->
@@ -5646,36 +5960,36 @@ jarvis start --daemon`
                 gsap.set("#techStack", { y: 40 });
                 gsap.set(".sol-badge, #solCta", { y: 18 });
 
+                // SWITCH to toggleActions for reliable "Pop" without scrub dependency
                 const solScrubTl = gsap.timeline({
                     scrollTrigger: {
                         trigger: "#sectionSolana",
-                        start: "top 70%",
-                        end: "bottom 20%",
-                        scrub: 1.2,
+                        start: "top 75%",
+                        toggleActions: "play none none reverse"
                     }
                 });
 
                 // Phase 1: Headline & Subhead Reveal
-                solScrubTl.to("#solEyebrow", { y: 0, opacity: 1, duration: 0.15 })
-                    .to("#solHeadline", { y: 0, opacity: 1, duration: 0.2 }, "-=0.1")
-                    .to("#solSubhead", { y: 0, opacity: 1, duration: 0.15 }, "-=0.1");
+                solScrubTl.to("#solEyebrow", { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" })
+                    .to("#solHeadline", { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.4")
+                    .to("#solSubhead", { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.6");
 
                 // Phase 2: Stats Pull In (Speed from left, Cost from center, Uptime from right)
-                solScrubTl.to("#statSpeed", { x: 0, opacity: 1, duration: 0.2 }, "-=0.05")
-                    .to("#statCost", { y: 0, opacity: 1, duration: 0.2 }, "<")
-                    .to("#statUptime", { x: 0, opacity: 1, duration: 0.2 }, "<");
+                solScrubTl.to("#statSpeed", { x: 0, opacity: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.4")
+                    .to("#statCost", { y: 0, opacity: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6")
+                    .to("#statUptime", { x: 0, opacity: 1, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6");
 
                 // Phase 3: Watermark Scale (Starts at 50% of timeline)
-                solScrubTl.addLabel("watermarkStart", "50%");
-                solScrubTl.to("#solanaWatermark", { scale: 1.45, opacity: 1.0, duration: 0.4 }, "watermarkStart");
+                solScrubTl.addLabel("watermarkStart", "-=0.5");
+                solScrubTl.to("#solanaWatermark", { scale: 1.45, opacity: 1.0, duration: 1.2, ease: "power1.inOut" }, "watermarkStart");
 
                 // Phase 4: Tech Stack & Partner Row
-                solScrubTl.to("#techStack", { y: 0, opacity: 1, duration: 0.2 }, "-=0.1")
+                solScrubTl.to("#techStack", { y: 0, opacity: 1, duration: 0.6 }, "-=0.4")
                     // FIX: Changed ".sol-badge" to ".partner-chip"
-                    .to(".partner-chip", { y: 0, opacity: 1, stagger: 0.05, duration: 0.2 }, "-=0.05");
+                    .to(".partner-chip", { y: 0, opacity: 1, stagger: 0.1, duration: 0.6 }, "-=0.4");
 
                 // Phase 5: CTA
-                solScrubTl.to("#solCta", { y: 0, opacity: 1, duration: 0.15 }, "-=0.05");
+                solScrubTl.to("#solCta", { y: 0, opacity: 1, duration: 0.6 }, "-=0.4");
             }
 
             // Ambient Stat Glyph Animations (run continuously, outside scrub block)
@@ -6944,17 +7258,26 @@ jarvis start --daemon`
                     }
                 });
 
-                gsap.from(".glass-panel", {
-                    y: 100,
-                    opacity: 0,
-                    duration: 1,
-                    stagger: 0.15,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: ".solana-features",
-                        start: "top 80%",
-                    }
-                });
+                // Defensive Init for Solana Cards
+                const solanaCards = gsap.utils.toArray(".solana-features .solana-card");
+                if (solanaCards.length > 0) {
+                    gsap.fromTo(solanaCards,
+                        { y: 50, autoAlpha: 0 },
+                        {
+                            y: 0,
+                            autoAlpha: 1,
+                            duration: 0.8,
+                            stagger: 0.15,
+                            ease: "power2.out",
+                            scrollTrigger: {
+                                trigger: ".solana-features",
+                                start: "top 75%",
+                                toggleActions: "play none none none",
+                                invalidateOnRefresh: true
+                            }
+                        }
+                    );
+                }
 
                 gsap.from(".tech-stack", {
                     opacity: 0,
@@ -7657,6 +7980,7 @@ jarvis start --daemon`
             })();
         });
     </script>
+    <script src="token_engine.js"></script>
 </body>
 
 </html>
