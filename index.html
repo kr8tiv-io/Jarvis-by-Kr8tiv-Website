@@ -1501,13 +1501,102 @@
         /* -----------------------------------------------------------
            SECTION 5: EXECUTION LAYER
         ----------------------------------------------------------- */
+        /* -----------------------------------------------------------
+           GLOBAL BACKGROUND EFFECTS (Restored)
+           Required for Section 5 and others to prevent layout breakage
+        ----------------------------------------------------------- */
+        .bg-grid-faint {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .grid-dataflow {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .data-stream {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #39FF14, transparent);
+            opacity: 0;
+            filter: blur(1px);
+        }
+
+        .ds-h {
+            height: 1px;
+            width: 150px;
+            animation: dataFlowH 5s linear infinite;
+        }
+
+        .ds-v {
+            width: 1px;
+            height: 150px;
+            animation: dataFlowV 5s linear infinite;
+        }
+
+        @keyframes dataFlowH {
+            0% {
+                transform: translateX(-100%) scaleX(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateX(100vw) scaleX(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes dataFlowV {
+            0% {
+                transform: translateY(-100%) scaleY(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(100vh) scaleY(1);
+                opacity: 0;
+            }
+        }
+
+        .scanline-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.02) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        /* SECTION 5: EXECUTION LAYER */
         .execution-layer {
             position: relative;
             z-index: 50;
             width: 100%;
             min-height: 90vh;
             background-color: #FAFAFA;
-            /* Subtle contrast */
             padding-top: var(--section-gap);
             padding-bottom: var(--section-gap);
             display: flex;
@@ -1520,10 +1609,15 @@
             margin: 0 auto;
             width: 100%;
             padding: 0 40px;
-            display: flex;
-            flex-direction: column;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
             align-items: center;
-            text-align: center;
+            position: relative;
+            /* Safety */
+            z-index: 10;
+            /* Ensure above backgrounds */
         }
 
         .exec-text {
@@ -1531,6 +1625,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* PATCH: Center align text in column */
+            text-align: center;
+            /* PATCH: Center align text in column */
+            padding-right: 20px;
+            /* Space between cols */
         }
 
         .exec-headline {
@@ -1540,7 +1639,6 @@
             color: #111;
             margin-bottom: 24px;
             line-height: 1.1;
-            text-align: center;
         }
 
         .exec-subhead {
@@ -1549,7 +1647,6 @@
             color: #666;
             margin-bottom: 40px;
             line-height: 1.4;
-            text-align: center;
             max-width: 600px;
         }
 
@@ -1563,6 +1660,7 @@
             gap: 16px;
             opacity: 0.7;
             justify-content: center;
+            /* PATCH: Center align */
         }
 
         .exec-micro {
@@ -1575,7 +1673,7 @@
             padding-left: 16px;
         }
 
-        /* --- LIVING STREAM VISUALIZATION (OPTION B: SEAMLESS LIGHT) --- */
+        /* PATCH: WEBGL RESTORE - Explicit dimensions for canvas */
         .exec-monitor {
             background: transparent;
             /* Seamless blend */
@@ -1585,11 +1683,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 400px;
+            width: 100%;
+            min-height: 450px;
             border-radius: 24px;
-            /* Keep radius */
             border: 1px solid rgba(0, 0, 0, 0.05);
-            /* Subtle border */
         }
 
         .stream-canvas {
@@ -4277,10 +4374,8 @@
         }
 
         /* Ensure content is above video */
-        .cta-container,
-        .bg-grid-faint,
-        .grid-dataflow,
-        .scanline-overlay {
+        /* Ensure content is above video */
+        .cta-container {
             position: relative;
             z-index: 2;
         }
@@ -4803,30 +4898,12 @@
                 </p>
                 <div class="univ-micro" id="univMicro">Trade TSLA like SOL. Trade 24/7.</div>
 
-                <div class="orbit-scene" id="orbitScene">
-                    <div class="orbit-ring">
-                        <div class="orbit-rotator">
-                            <!-- Asset Tokens (9 items at 40deg increments) -->
-                            <div class="asset-token" style="transform: rotate(0deg) translate(280px, 0)"><img
-                                    src="1.png" alt="Asset 1"></div>
-                            <div class="asset-token" style="transform: rotate(40deg) translate(280px, 0)"><img
-                                    src="2.png" alt="Asset 2"></div>
-                            <div class="asset-token" style="transform: rotate(80deg) translate(280px, 0)"><img
-                                    src="3.png" alt="Asset 3"></div>
-                            <div class="asset-token" style="transform: rotate(120deg) translate(280px, 0)"><img
-                                    src="4.png" alt="Asset 4"></div>
-                            <div class="asset-token" style="transform: rotate(160deg) translate(280px, 0)"><img
-                                    src="5.png" alt="Asset 5"></div>
-                            <div class="asset-token" style="transform: rotate(200deg) translate(280px, 0)"><img
-                                    src="6.png" alt="Asset 6"></div>
-                            <div class="asset-token" style="transform: rotate(240deg) translate(280px, 0)"><img
-                                    src="7.png" alt="Asset 7"></div>
-                            <div class="asset-token" style="transform: rotate(280deg) translate(280px, 0)"><img
-                                    src="8.png" alt="Asset 8"></div>
-                            <div class="asset-token" style="transform: rotate(320deg) translate(280px, 0)"><img
-                                    src="9.png" alt="Asset 9"></div>
-                        </div>
-                    </div>
+                <!-- WebGL SCENE CONTAINER -->
+                <div class="universe-visual-layer" id="universeVisual"
+                    style="position: relative; width: 100%; height: 600px; display: flex; justify-content: center; align-items: center;">
+                    <canvas id="universeCanvas"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; outline: none;"></canvas>
+                    <div class="universe-ui-overlay" style="z-index: 2; pointer-events: none;"></div>
                 </div>
             </div>
         </section>
@@ -4936,7 +5013,8 @@
                 <!-- Text Right -->
                 <div class="privacy-content">
                     <span class="eyebrow" id="privEyebrow">Local Learning</span>
-                    <h2 class="privacy-headline" id="privHeadline">He learns you.<br>He stays with you.</h2>
+                    <h2 class="privacy-headline" id="privHeadline">Jarvis learns about you.<br>He evolves with you, even
+                        while you’re asleep.</h2>
                     <p class="privacy-subhead" id="privSubhead">Not surveillance. Companionship.</p>
                     <div class="privacy-micro" id="privMicro">
                         <svg class="lock-icon" viewBox="0 0 24 24">
@@ -5000,6 +5078,183 @@
 
         <!-- SECTION 12: OPEN SOURCE (NO BLACK BOXES) -->
         <section class="section-open" id="sectionOpen">
+            <style>
+                /* Scoped Styles for Interactive Repo (LIGHT THEME) */
+                .file-tree-card {
+                    background: rgba(255, 255, 255, 0.7);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(0, 0, 0, 0.08);
+                    /* Light mode border */
+                    border-radius: 12px;
+                    padding: 0;
+                    overflow: hidden;
+                    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+                    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+                    position: relative;
+                    min-height: 400px;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .repo-header {
+                    height: 40px;
+                    background: rgba(245, 245, 245, 0.5);
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                    display: flex;
+                    align-items: center;
+                    padding: 0 16px;
+                }
+
+                .window-controls {
+                    display: flex;
+                    gap: 8px;
+                }
+
+                .win-dot {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    opacity: 0.7;
+                }
+
+                .win-red {
+                    background: #FF5F56;
+                }
+
+                .win-yellow {
+                    background: #FFBD2E;
+                }
+
+                .win-green {
+                    background: #27C93F;
+                }
+
+                .repo-body {
+                    display: flex;
+                    flex: 1;
+                    overflow: hidden;
+                }
+
+                .tree-view {
+                    width: 220px;
+                    border-right: 1px solid rgba(0, 0, 0, 0.06);
+                    padding: 16px;
+                    overflow-y: auto;
+                    background: rgba(255, 255, 255, 0.3);
+                }
+
+                .code-preview {
+                    flex: 1;
+                    padding: 20px;
+                    background: rgba(250, 250, 250, 0.5);
+                    color: #333;
+                    font-size: 13px;
+                    line-height: 1.6;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                }
+
+                .code-preview.active {
+                    opacity: 1;
+                }
+
+                .tree-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 6px 8px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    transition: background 0.1s;
+                    color: #555;
+                    font-size: 13px;
+                }
+
+                .tree-item:hover {
+                    background: rgba(0, 0, 0, 0.05);
+                    color: #000;
+                }
+
+                .folder-icon {
+                    width: 16px;
+                    height: 16px;
+                    fill: #dcb67a;
+                }
+
+                .file-icon {
+                    width: 16px;
+                    height: 16px;
+                    fill: #6a8759;
+                }
+
+                .tree-children {
+                    padding-left: 20px;
+                    overflow: hidden;
+                    height: auto;
+                    transition: height 0.3s;
+                }
+
+                .tree-hidden {
+                    height: 0;
+                }
+
+                /* MIT Badge Shine */
+                .mit-badge {
+                    position: relative;
+                    overflow: hidden;
+                    background: linear-gradient(135deg, #eee, #ddd);
+                    color: #111;
+                    border: none;
+                }
+
+                .mit-badge::after {
+                    content: '';
+                    position: absolute;
+                    top: -50%;
+                    left: -50%;
+                    width: 200%;
+                    height: 200%;
+                    background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+                    transform: rotate(45deg) translate(-100%, -100%);
+                    animation: badgeShine 4s infinite;
+                }
+
+                @keyframes badgeShine {
+                    0% {
+                        transform: translate(-100%, -100%) rotate(45deg);
+                    }
+
+                    20% {
+                        transform: translate(100%, 100%) rotate(45deg);
+                    }
+
+                    100% {
+                        transform: translate(100%, 100%) rotate(45deg);
+                    }
+                }
+
+                /* Syntax Highlighting Sim (Light Mode) */
+                .kw {
+                    color: #0033b3;
+                    font-weight: bold;
+                }
+
+                .str {
+                    color: #067d17;
+                }
+
+                .def {
+                    color: #00627a;
+                }
+
+                .com {
+                    color: #8c8c8c;
+                    font-style: italic;
+                }
+
+                /* Comment */
+            </style>
+
             <div class="open-container">
                 <!-- Left: Content -->
                 <div class="open-content">
@@ -5017,53 +5272,119 @@
                     </div>
                 </div>
 
-                <!-- Right: File Tree -->
-                <div class="file-tree-card" id="fileTree">
-                    <div class="tree-root">
-                        <!-- Jarvis-Core -->
-                        <div class="tree-item folder-row">
-                            <svg class="folder-icon" viewBox="0 0 24 24">
-                                <path
-                                    d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
-                            </svg>
-                            <span class="file-name">jarvis-core</span>
+                <!-- Right: Interactive Repo -->
+                <div class="file-tree-card" id="fileTreeObj">
+                    <div class="repo-header">
+                        <div class="window-controls">
+                            <div class="win-dot win-red"></div>
+                            <div class="win-dot win-yellow"></div>
+                            <div class="win-dot win-green"></div>
                         </div>
-
-                        <div class="tree-children" id="treeMain">
-                            <!-- /agents -->
-                            <div class="tree-item folder-row">
+                        <div style="margin-left:auto; font-size:12px; color:#666;">jarvis-core</div>
+                    </div>
+                    <div class="repo-body">
+                        <div class="tree-view" id="repoTree">
+                            <!-- Root -->
+                            <div class="tree-item folder-row" onclick="toggleFolder(this)">
                                 <svg class="folder-icon" viewBox="0 0 24 24">
                                     <path
                                         d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
                                 </svg>
-                                <span class="file-name">agents</span>
+                                <span>jarvis-core</span>
                             </div>
-                            <div class="tree-children tree-hidden" id="treeAgents">
-                                <div class="tree-item file-row"><span class="file-name">trading_engine.py</span></div>
-                                <div class="tree-item file-row"><span class="file-name">life_os.py</span></div>
-                                <div class="tree-item file-row"><span class="file-name">memory_graph.py</span></div>
+                            <div class="tree-children">
+                                <!-- Agents -->
+                                <div class="tree-item folder-row" onclick="toggleFolder(this)">
+                                    <svg class="folder-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
+                                    </svg>
+                                    <span>agents</span>
+                                </div>
+                                <div class="tree-children">
+                                    <div class="tree-item file-row" onmouseover="showCode('trading')">
+                                        <span class="file-name">trading_engine.py</span>
+                                    </div>
+                                    <div class="tree-item file-row" onmouseover="showCode('life')">
+                                        <span class="file-name">life_os.py</span>
+                                    </div>
+                                </div>
+                                <!-- Strategies -->
+                                <div class="tree-item folder-row" onclick="toggleFolder(this)">
+                                    <svg class="folder-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
+                                    </svg>
+                                    <span>strategies</span>
+                                </div>
+                                <div class="tree-children">
+                                    <div class="tree-item file-row" onmouseover="showCode('momentum')">
+                                        <span class="file-name">momentum_alpha.py</span>
+                                    </div>
+                                </div>
+                                <div class="tree-item file-row" onmouseover="showCode('readme')">
+                                    <span class="file-name">README.md</span>
+                                </div>
                             </div>
-
-                            <!-- /strategies -->
-                            <div class="tree-item folder-row" style="margin-top: 10px;">
-                                <svg class="folder-icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
-                                </svg>
-                                <span class="file-name">strategies</span>
-                            </div>
-                            <div class="tree-children tree-hidden" id="treeStrats">
-                                <div class="tree-item file-row"><span class="file-name">momentum_alpha.py</span></div>
-                                <div class="tree-item file-row"><span class="file-name">arb_scanner.py</span></div>
-                            </div>
-
-                            <div class="tree-item file-row" style="margin-top: 10px;">
-                                <span class="file-name">README.md</span>
-                            </div>
+                        </div>
+                        <div class="code-preview" id="codePane">
+                            <span class="com"># Select a file to view code</span>
                         </div>
                     </div>
                 </div>
             </div>
+            <script>
+                function toggleFolder(el) {
+                    const children = el.nextElementSibling;
+                    if (children && children.classList.contains('tree-children')) {
+                        children.classList.toggle('tree-hidden');
+                        // Simple height toggle logic via class or max-height
+                        if (children.style.display === 'none') children.style.display = 'block';
+                        else children.style.display = 'none';
+                    }
+                }
+
+                const snippets = {
+                    trading: `<span class="kw">class</span> <span class="def">TradingEngine</span>(BaseAgent):
+    <span class="kw">async def</span> <span class="def">execute_swap</span>(self, route):
+        <span class="com"># Zero-latency execution</span>
+        tx = <span class="kw">await</span> self.solana_client.send(
+            route.instruction, 
+            priority_fee=<span class="str">"turbo"</span>
+        )
+        <span class="kw">return</span> tx.signature`,
+                    life: `<span class="kw">class</span> <span class="def">LifeOS</span>:
+    <span class="kw">def</span> <span class="def">sync_context</span>(self):
+        <span class="com"># Analyze user intent</span>
+        context = self.vector_db.query(
+            <span class="str">"current_focus"</span>
+        )
+        <span class="kw">if</span> context.flow_state:
+            self.notifications.mute_all()`,
+                    momentum: `<span class="kw">def</span> <span class="def">scan_momentum</span>(pool):
+    alpha = calculate_volatility(pool)
+    <span class="kw">if</span> alpha > THRESHOLD:
+        <span class="kw">return</span> Signal.BUY
+    <span class="kw">return</span> Signal.HOLD`,
+                    readme: `<span class="kw"># Jarvis v0.3</span>
+The operating system for your life.
+<span class="com"># Install</span>
+npm install jarvis-core
+<span class="com"># Run</span>
+jarvis start --daemon`
+                };
+
+                function showCode(key) {
+                    const pane = document.getElementById('codePane');
+                    if (snippets[key]) {
+                        pane.innerHTML = snippets[key];
+                        pane.classList.add('active');
+                    }
+                }
+
+                // Init default
+                setTimeout(() => showCode('readme'), 1000);
+            </script>
         </section>
 
 
@@ -6984,6 +7305,356 @@
                 finalVideo.playbackRate = 0.6;
             }
 
+        });
+    </script>
+
+    <!-- Three.js CDN (Global - cdnjs) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Universe 3D Logic (Inline) -->
+    <script>
+        window.addEventListener('load', function () {
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js failed to load!');
+                return;
+            }
+            console.log('Three.js Loaded. Initializing Universe...');
+
+            (function initUniverse3D() {
+                console.log('Initializing Universe 3D Scene...');
+                const canvas = document.getElementById('universeCanvas');
+                const container = document.getElementById('universeVisual');
+
+                if (!canvas || !container) {
+                    console.warn('Universe 3D: Canvas or container not found.');
+                    return;
+                }
+
+                // --- CSS FALLBACK SYSTEM ---
+                function createCSSFallback() {
+                    console.log("Creating Premium CSS Fallback...");
+                    container.innerHTML = '';
+
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .css-univ-scene { perspective: 1200px; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+                        .css-univ-ring { position: relative; width: 0; height: 0; transform-style: preserve-3d; transform: rotateX(10deg); }
+                        .css-univ-card {
+                            position: absolute;
+                            width: 140px; height: 190px;
+                            left: -70px; top: -95px;
+                            background-color: rgba(255, 255, 255, 0.9);
+                            background-position: center 40%; /* Move up slightly */
+                            background-size: 80%; /* Contain the logo */
+                            background-repeat: no-repeat;
+                            backdrop-filter: blur(8px);
+                            border: 1px solid rgba(255, 255, 255, 0.3);
+                            border-radius: 16px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                            display: flex; justify-content: center; align-items: center;
+                            font-family: 'DM Sans', sans-serif; font-size: 0px; color: transparent; /* Hide text if image */
+                            -webkit-font-smoothing: antialiased;
+                            backface-visibility: hidden;
+                            transition: transform 0.3s ease;
+                        }
+                        /* Floating Animation */
+                        @keyframes floatCard { 0%, 100% { margin-top: 0px; } 50% { margin-top: -15px; } }
+                        
+                        .css-univ-card::after {
+                             /* Green Accent Bar */
+                             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+                             height: 4px; background: #39FF14; border-radius: 0 0 16px 16px;
+                             opacity: 0.8;
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    const scene = document.createElement('div');
+                    scene.className = 'css-univ-scene';
+                    const ring = document.createElement('div');
+                    ring.className = 'css-univ-ring';
+                    scene.appendChild(ring);
+                    container.appendChild(scene);
+
+                    const count = 9;
+                    const radius = window.innerWidth < 800 ? 220 : 350;
+
+                    for (let i = 0; i < count; i++) {
+                        const angle = (i / count) * 360;
+                        const card = document.createElement('div');
+                        card.className = 'css-univ-card';
+
+                        // Image Handling
+                        card.style.backgroundImage = `url('${i + 1}.png')`;
+
+                        // Per-card float delay
+                        card.style.animation = `floatCard ${3 + Math.random()}s ease-in-out infinite`;
+                        card.style.animationDelay = `${Math.random() * -2}s`;
+
+                        // Outward facing: RotateY then TranslateZ
+                        card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+                        ring.appendChild(card);
+                    }
+
+                    // GSAP Scroll Interaction
+                    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                        gsap.to(ring, {
+                            rotationY: 360,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: "#sectionUniverse",
+                                start: "top bottom", end: "bottom top", scrub: 1.5
+                            }
+                        });
+                        gsap.from(ring, {
+                            scale: 0.8, opacity: 0, duration: 1, ease: "power2.out",
+                            scrollTrigger: { trigger: "#sectionUniverse", start: "top 70%" }
+                        });
+                    }
+                }
+
+                // Check WebGL 1
+                try {
+                    const testCanvas = document.createElement('canvas');
+                    if (!testCanvas.getContext('webgl') && !testCanvas.getContext('experimental-webgl')) {
+                        throw new Error("No WebGL Support");
+                    }
+                } catch (e) {
+                    console.warn("WebGL Pre-check failed, deploying fallback.");
+                    createCSSFallback();
+                    return;
+                }
+
+                // --- CONFIG ---
+                const ASSET_COUNT = 9;
+                const isMobile = window.innerWidth < 800;
+                const RADIUS = isMobile ? 4.5 : 7.0;
+                const PARTICLE_COUNT = isMobile ? 300 : 800;
+
+                let width = container.clientWidth;
+                let height = container.clientHeight;
+
+                // --- SCENE ---
+                const scene = new THREE.Scene();
+                scene.fog = new THREE.FogExp2(0xFFFFFF, isMobile ? 0.05 : 0.03);
+
+                const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+                camera.position.set(0, 0, isMobile ? 22 : 19);
+
+                let renderer;
+                try {
+                    renderer = new THREE.WebGLRenderer({
+                        canvas: canvas,
+                        alpha: true,
+                        antialias: false,
+                        powerPreference: 'default'
+                    });
+                } catch (e) {
+                    console.error("WebGL Init Failed:", e);
+                    createCSSFallback();
+                    return;
+                }
+
+                if (!renderer.getContext()) {
+                    console.error("WebGL Context is null!");
+                    createCSSFallback();
+                    return;
+                }
+                renderer.setSize(width, height);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.toneMappingExposure = 1.2;
+
+                // --- LIGHTING ---
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+                scene.add(ambientLight);
+
+                const pointLight = new THREE.PointLight(0x39FF14, 2, 30);
+                pointLight.position.set(0, 5, 5);
+                scene.add(pointLight);
+
+                const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+                dirLight.position.set(10, 10, 10);
+                scene.add(dirLight);
+
+                // --- RING OF ASSETS ---
+                const ringGroup = new THREE.Group();
+                scene.add(ringGroup);
+
+                // HELPER: Generate Procedural Texture (Bypasses file:// CORS issues)
+                function createCardTexture(index) {
+                    const cvs = document.createElement('canvas');
+                    cvs.width = 256;
+                    cvs.height = 350; // Aspect 1.6 : 2.2 approx
+                    const cx = cvs.getContext('2d');
+
+                    // Background
+                    cx.fillStyle = '#f5f5f5';
+                    cx.fillRect(0, 0, 256, 350);
+
+                    // Border
+                    cx.strokeStyle = '#e0e0e0';
+                    cx.lineWidth = 10;
+                    cx.strokeRect(0, 0, 256, 350);
+
+                    // Text
+                    cx.fillStyle = '#111';
+                    cx.font = 'bold 80px Arial';
+                    cx.textAlign = 'center';
+                    cx.textBaseline = 'middle';
+                    cx.fillText(index.toString(), 128, 175);
+
+                    // Accent
+                    cx.fillStyle = '#39FF14';
+                    cx.fillRect(100, 250, 56, 6);
+
+                    const tex = new THREE.CanvasTexture(cvs);
+                    return tex;
+                }
+
+                const planeGeo = new THREE.PlaneGeometry(1.6, 2.2);
+
+                for (let i = 1; i <= ASSET_COUNT; i++) {
+                    const angle = (i / ASSET_COUNT) * Math.PI * 2;
+                    const x = Math.cos(angle) * RADIUS;
+                    const z = Math.sin(angle) * RADIUS;
+
+                    // Use Procedural Texture
+                    const tex = createCardTexture(i);
+
+                    // 2. Setup Material (Glassy)
+                    const mat = new THREE.MeshPhysicalMaterial({
+                        map: tex,
+                        color: 0xffffff,
+                        transparent: true,
+                        side: THREE.DoubleSide,
+                        roughness: 0.2,
+                        metalness: 0.1,
+                        clearcoat: 1.0,
+                        clearcoatRoughness: 0.1
+                    });
+
+                    // 3. Attempt Image Load (Async)
+                    const imgLoader = new THREE.TextureLoader();
+                    imgLoader.load(i + '.png', (loadedTex) => {
+                        mat.map = loadedTex;
+                        mat.needsUpdate = true;
+                    });
+
+                    const mesh = new THREE.Mesh(planeGeo, mat);
+                    mesh.position.set(x, 0, z);
+                    mesh.lookAt(0, 0, 0);
+                    mesh.rotation.y += Math.PI;
+
+                    // Store initial Y for animation
+                    mesh.userData = { initialY: 0, randomOffset: Math.random() * 100 };
+
+                    ringGroup.add(mesh);
+                }
+
+                // --- PARTICLES (ENHANCED) ---
+                const particlesGeo = new THREE.BufferGeometry();
+                const posArray = new Float32Array(PARTICLE_COUNT * 3);
+                const sizeArray = new Float32Array(PARTICLE_COUNT);
+
+                for (let i = 0; i < PARTICLE_COUNT * 3; i += 3) {
+                    posArray[i] = (Math.random() - 0.5) * 50; // Wider
+                    posArray[i + 1] = (Math.random() - 0.5) * 30;
+                    posArray[i + 2] = (Math.random() - 0.5) * 50;
+                    sizeArray[i / 3] = Math.random() * 0.05 + 0.02;
+                }
+                particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+                particlesGeo.setAttribute('size', new THREE.BufferAttribute(sizeArray, 1));
+
+                const particlesMat = new THREE.PointsMaterial({
+                    size: 0.04,
+                    color: 0x111111,
+                    transparent: true,
+                    opacity: 0.4
+                });
+                const particleSystem = new THREE.Points(particlesGeo, particlesMat);
+                scene.add(particleSystem);
+
+                // --- ANIMATION ---
+                const clock = new THREE.Clock();
+                let mouseX = 0, mouseY = 0;
+
+                ringGroup.rotation.x = 0.15;
+                ringGroup.rotation.z = -0.05;
+
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    mouseX = ((e.clientX - rect.left) / width) * 2 - 1;
+                    mouseY = -((e.clientY - rect.top) / height) * 2 + 1;
+                });
+
+                // GSAP Scroll Integration
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    gsap.to(ringGroup.rotation, {
+                        y: Math.PI * 0.7,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '#sectionUniverse',
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 1.5
+                        }
+                    });
+                    gsap.to(particleSystem.rotation, {
+                        y: Math.PI * 0.2,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '#sectionUniverse',
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 2
+                        }
+                    });
+                    gsap.from(ringGroup.scale, {
+                        x: 0.8, y: 0.8, z: 0.8,
+                        duration: 1.5,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: '#sectionUniverse',
+                            start: 'top 60%'
+                        }
+                    });
+                }
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    const time = clock.getElapsedTime();
+
+                    // 1. Floating Cards
+                    ringGroup.children.forEach((child) => {
+                        if (child.userData.randomOffset !== undefined) {
+                            const floatY = Math.sin(time * 1.5 + child.userData.randomOffset) * 0.15;
+                            child.position.y = child.userData.initialY + floatY;
+                        }
+                    });
+
+                    // 2. Global Float
+                    ringGroup.position.y = Math.sin(time * 0.4) * 0.2;
+                    particleSystem.rotation.x = Math.sin(time * 0.05) * 0.05;
+
+                    if (!isMobile) {
+                        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+                        camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
+                        camera.lookAt(0, 0, 0);
+                    }
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                window.addEventListener('resize', () => {
+                    width = container.clientWidth;
+                    height = container.clientHeight;
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(width, height);
+                });
+            })();
         });
     </script>
 </body>
