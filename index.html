@@ -403,6 +403,38 @@
             border: 0;
         }
 
+        /* MANIFESTO CANVAS (New Dynamic Background) */
+        #manifesto-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            /* Behind content */
+            pointer-events: none;
+            opacity: 1;
+            /* Full opacity, control in JS */
+            mix-blend-mode: normal;
+            /* Normal blending for dark on white */
+        }
+
+        /* Adjusted Spacing for "WAYS OPEN" Separation */
+        .manifesto-track {
+            gap: 4vw;
+            /* Responsive breathing room between words */
+        }
+
+        .manifesto-track .word {
+            margin-right: 2vw;
+            /* Additional separation */
+        }
+
+        .manifesto-track .sep {
+            margin-left: 1vw;
+            margin-right: 1vw;
+        }
+
         /* Reduced motion: static display */
         @media (prefers-reduced-motion: reduce) {
             .manifesto-section {
@@ -4839,6 +4871,7 @@
 
         <!-- MANIFESTO MARQUEE (Pinned Scroll Gate) -->
         <section class="manifesto-section" id="manifesto">
+            <canvas id="manifesto-canvas"></canvas>
             <h2 class="sr-only">Open source manifesto</h2>
             <div class="manifesto-inner">
                 <div class="manifesto-track" aria-hidden="true">
@@ -8115,6 +8148,7 @@ jarvis start --daemon`
         });
     </script>
     <script src="token_visual.js"></script>
+    <script src="manifesto_bg.js"></script>
 </body>
 
 </html>
