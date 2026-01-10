@@ -15,6 +15,7 @@
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         :root {
@@ -3709,6 +3710,74 @@
             overflow: hidden;
         }
 
+        /* --- DATA STREAMS (High Polish) --- */
+        .section-final-cta .data-stream {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.4), transparent);
+            opacity: 0;
+            will-change: transform, opacity;
+            border-radius: 1px;
+            filter: drop-shadow(0 0 4px rgba(57, 255, 20, 0.5));
+        }
+
+        .section-final-cta .ds-h {
+            height: 2px;
+            width: 150px;
+            animation: finalFlowH 7s linear infinite;
+            background: linear-gradient(90deg, transparent, #39FF14, transparent);
+        }
+
+        .section-final-cta .ds-v {
+            width: 2px;
+            height: 150px;
+            animation: finalFlowV 7s linear infinite;
+            background: linear-gradient(180deg, transparent, #39FF14, transparent);
+        }
+
+        @keyframes finalFlowH {
+            0% {
+                transform: translateX(-50%) scaleX(0.2);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateX(0) scaleX(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateX(50%) scaleX(1);
+            }
+
+            100% {
+                transform: translateX(100%) scaleX(0.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes finalFlowV {
+            0% {
+                transform: translateY(-50%) scaleY(0.2);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0) scaleY(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateY(50%) scaleY(1);
+            }
+
+            100% {
+                transform: translateY(100%) scaleY(0.2);
+                opacity: 0;
+            }
+        }
+
         /* Video Background Layer */
         .final-video-bg {
             position: absolute;
@@ -5927,6 +5996,17 @@ jarvis start --daemon`
         document.addEventListener('DOMContentLoaded', () => {
             gsap.registerPlugin(ScrollTrigger);
 
+            // Helper: Only animate if target elements exist
+            const safeGsap = (method, selector, props, position) => {
+                const el = document.querySelector(selector);
+                if (!el && !document.querySelectorAll(selector).length) return null;
+                if (position !== undefined) {
+                    return gsap[method](selector, props, position);
+                }
+                return gsap[method](selector, props);
+            };
+            const hasEl = (sel) => document.querySelector(sel) !== null || document.querySelectorAll(sel).length > 0;
+
             // --- GSAP ANIMATION FOR SECTION SPLIT ---
             const splitTl = gsap.timeline({
                 scrollTrigger: {
@@ -5997,7 +6077,7 @@ jarvis start --daemon`
             if (!prefersReducedMotion) {
                 // Set initial states for scrub
                 gsap.set("#solEyebrow, #solHeadline, #solSubhead, #statSpeed, #statCost, #statUptime, #techStack, .sol-badge, #solCta", { opacity: 0 });
-                gsap.set("#solanaWatermark", { scale: 0.9, opacity: 0.5, transformOrigin: "center center" });
+                if (hasEl("#solanaWatermark")) gsap.set("#solanaWatermark", { scale: 0.9, opacity: 0.5, transformOrigin: "center center" });
                 gsap.set("#statSpeed", { x: -60 });
                 gsap.set("#statUptime", { x: 60 });
                 gsap.set("#statCost, #solEyebrow, #solHeadline, #solSubhead", { y: 20 });
@@ -6025,7 +6105,7 @@ jarvis start --daemon`
 
                 // Phase 3: Watermark Scale (Starts at 50% of timeline)
                 solScrubTl.addLabel("watermarkStart", "-=0.5");
-                solScrubTl.to("#solanaWatermark", { scale: 1.45, opacity: 1.0, duration: 1.2, ease: "power1.inOut" }, "watermarkStart");
+                if (hasEl("#solanaWatermark")) solScrubTl.to("#solanaWatermark", { scale: 1.45, opacity: 1.0, duration: 1.2, ease: "power1.inOut" }, "watermarkStart");
 
                 // Phase 4: Tech Stack & Partner Row
                 solScrubTl.to("#techStack", { y: 0, opacity: 1, duration: 0.6 }, "-=0.4")
@@ -6040,7 +6120,7 @@ jarvis start --daemon`
             // These run on the glyphs themselves, not the parent containers
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 // Speed Glyph: Horizontal drift + opacity breathe
-                gsap.to("#statSpeed .stat-glyph", {
+                if (hasEl("#statSpeed .stat-glyph")) gsap.to("#statSpeed .stat-glyph", {
                     x: 2,
                     opacity: 0.85,
                     duration: 3.5,
@@ -6051,7 +6131,7 @@ jarvis start --daemon`
                 });
 
                 // Cost Glyph: Scale micro-breathe
-                gsap.to("#statCost .stat-glyph", {
+                if (hasEl("#statCost .stat-glyph")) gsap.to("#statCost .stat-glyph", {
                     scale: 1.03,
                     duration: 4,
                     repeat: -1,
@@ -6061,7 +6141,7 @@ jarvis start --daemon`
                 });
 
                 // Uptime Glyph: Vertical drift + micro rotation
-                gsap.to("#statUptime .stat-glyph", {
+                if (hasEl("#statUptime .stat-glyph")) gsap.to("#statUptime .stat-glyph", {
                     y: 2,
                     rotation: 1,
                     duration: 3.8,
@@ -6171,7 +6251,7 @@ jarvis start --daemon`
 
             // 2. Orbit Entrance
             // Spin it out from zero scale
-            univTl.from(".orbit-scene", {
+            if (hasEl(".orbit-scene")) univTl.from(".orbit-scene", {
                 scale: 0,
                 opacity: 0,
                 rotationZ: 180,
@@ -6181,7 +6261,7 @@ jarvis start --daemon`
 
             // Scroll-Linked Rotation Speedup
             // We want the orbit to spin faster when we scroll through this section
-            gsap.to(".orbit-rotator", {
+            if (hasEl(".orbit-rotator")) gsap.to(".orbit-rotator", {
                 scrollTrigger: {
                     trigger: "#sectionUniverse",
                     start: "top bottom",
@@ -6745,15 +6825,15 @@ jarvis start --daemon`
                 .from("#mitBadge", { opacity: 0, scale: 0.9, duration: 0.5 }, "-=0.3");
 
             // File Tree Right
-            openTl.from("#fileTree", { x: 30, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.8");
+            if (hasEl("#fileTreeObj")) openTl.from("#fileTreeObj", { x: 30, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.8");
 
             // Expand Folders Sequence
             // jarvis-core open -> agents open -> list files
-            openTl.from("#treeMain", { height: 0, opacity: 0, duration: 0.5, ease: "power2.inOut" }, "-=0.4")
-                .from("#treeAgents", { height: 0, opacity: 0, duration: 0.5, ease: "power2.inOut" }, ">")
-                .from(".tree-hidden .file-row", { x: -10, opacity: 0, duration: 0.3, stagger: 0.1 }, "<0.2")
-                .from("#treeStrats", { height: 0, opacity: 0, duration: 0.5, ease: "power2.inOut" }, ">-0.1")
-                .from("#treeStrats .file-row", { x: -10, opacity: 0, duration: 0.3, stagger: 0.1 }, "<0.2");
+            if (hasEl("#repoTree > .tree-children")) openTl.from("#repoTree > .tree-children", { height: 0, opacity: 0, duration: 0.5, ease: "power2.inOut" }, "-=0.4");
+            if (hasEl("#repoTree .tree-children .tree-children")) {
+                openTl.from("#repoTree .tree-children .tree-children", { height: 0, opacity: 0, duration: 0.5, ease: "power2.inOut", stagger: 0.2 }, ">")
+                    .from("#repoTree .file-row", { x: -10, opacity: 0, duration: 0.3, stagger: 0.1 }, "<0.2");
+            }
 
 
             // --- 1. ENTRANCE ANIMATION ---
@@ -6928,7 +7008,7 @@ jarvis start --daemon`
                 .from("#tokLogos", { opacity: 0, duration: 0.6 }, "-=0.3");
 
             // 2. Visual Entrance
-            tokTl.from("#chromeToken", {
+            if (hasEl("#chromeToken")) tokTl.from("#chromeToken", {
                 scale: 0,
                 rotation: -90,
                 opacity: 0,
@@ -6937,7 +7017,7 @@ jarvis start --daemon`
             }, "-=1");
 
             // 3. Nodes Pop & Connect
-            tokTl.from(".connection-node", {
+            if (hasEl(".connection-node")) tokTl.from(".connection-node", {
                 scale: 0,
                 opacity: 0,
                 duration: 0.5,
@@ -6946,75 +7026,79 @@ jarvis start --daemon`
             }, "-=0.6");
 
             // Ambient float for nodes (random)
-            gsap.to("#node1", { y: -15, duration: 2.5, yoyo: true, repeat: -1, ease: "sine.inOut" });
-            gsap.to("#node2", { y: 15, duration: 3.2, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 0.5 });
-            gsap.to("#node3", { y: -10, duration: 2.8, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 1 });
+            if (hasEl("#node1")) gsap.to("#node1", { y: -15, duration: 2.5, yoyo: true, repeat: -1, ease: "sine.inOut" });
+            if (hasEl("#node2")) gsap.to("#node2", { y: 15, duration: 3.2, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 0.5 });
+            if (hasEl("#node3")) gsap.to("#node3", { y: -10, duration: 2.8, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 1 });
 
             // --- SECTION 15: ROADMAP ---
-            const roadTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#sectionRoadmap",
-                    start: "top 75%",
-                    toggleActions: "play none none reverse"
-                }
-            });
+            if (hasEl("#sectionRoadmap")) {
+                const roadTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#sectionRoadmap",
+                        start: "top 75%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
 
-            // 1. Header
-            roadTl.from("#roadEyebrow", { y: 20, opacity: 0, duration: 0.5 })
-                .from("#roadHeadline", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4");
+                // 1. Header
+                roadTl.from("#roadEyebrow", { y: 20, opacity: 0, duration: 0.5 })
+                    .from("#roadHeadline", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4");
 
-            // 2. Columns Stagger
-            roadTl.from(".roadmap-col", {
-                y: 40,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: "power2.out"
-            }, "-=0.2");
+                // 2. Columns Stagger
+                roadTl.from(".roadmap-col", {
+                    y: 40,
+                    opacity: 0,
+                    duration: 0.8,
+                    stagger: 0.2,
+                    ease: "power2.out"
+                }, "-=0.2");
 
-            // 3. Items Internal Stagger
-            roadTl.from(".item-now", { x: -10, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.6");
-            roadTl.from(".item-next", { x: -10, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.4");
-            roadTl.from(".item-later", { x: -10, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.4");
+                // 3. Items Internal Stagger
+                roadTl.from(".item-now", { x: -10, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.6");
+                roadTl.from(".item-next", { x: -10, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.4");
+                roadTl.from(".item-later", { x: -10, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.4");
+            }
 
             // --- SECTION 16: COMMUNITY ---
-            const commTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#sectionCommunity",
-                    start: "top 70%",
-                    toggleActions: "play none none reverse"
-                }
-            });
+            if (hasEl("#sectionCommunity")) {
+                const commTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#sectionCommunity",
+                        start: "top 70%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
 
-            // Text
-            commTl.from("#commEyebrow", { y: 20, opacity: 0, duration: 0.5 })
-                .from("#commHeadline", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4")
-                .from("#commSubhead", { opacity: 0, duration: 0.6 }, "-=0.3")
-                .from("#commBtns", { opacity: 0, y: 10, duration: 0.5 }, "-=0.2");
+                // Text
+                commTl.from("#commEyebrow", { y: 20, opacity: 0, duration: 0.5 })
+                    .from("#commHeadline", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4")
+                    .from("#commSubhead", { opacity: 0, duration: 0.6 }, "-=0.3")
+                    .from("#commBtns", { opacity: 0, y: 10, duration: 0.5 }, "-=0.2");
 
-            // Hex Grid
-            commTl.from(".hex-node", {
-                scale: 0,
-                opacity: 0,
-                duration: 0.6,
-                stagger: {
-                    amount: 0.8,
-                    grid: "auto",
-                    from: "center"
-                },
-                ease: "back.out(1.5)"
-            }, "-=0.8");
+                // Hex Grid
+                commTl.from(".hex-node", {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 0.6,
+                    stagger: {
+                        amount: 0.8,
+                        grid: "auto",
+                        from: "center"
+                    },
+                    ease: "back.out(1.5)"
+                }, "-=0.8");
 
-            // Pulse Active Nodes
-            gsap.to(".hex-node.active", {
-                boxShadow: "0 10px 40px rgba(57, 255, 20, 0.4)",
-                scale: 1.05,
-                duration: 1.5,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                stagger: 0.2
-            });
+                // Pulse Active Nodes
+                if (hasEl(".hex-node.active")) gsap.to(".hex-node.active", {
+                    boxShadow: "0 10px 40px rgba(57, 255, 20, 0.4)",
+                    scale: 1.05,
+                    duration: 1.5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    stagger: 0.2
+                });
+            } // End #sectionCommunity guard
 
             // --- SECTION 17: FINAL CTA ---
             const finalTl = gsap.timeline({
@@ -7074,609 +7158,594 @@ jarvis start --daemon`
             if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
 
                 // 1. SPEED: Scan Rail Pulse (Left to Right)
-                const tlSpeed = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-                tlSpeed.fromTo(".scan-pulse",
-                    { attr: { x1: 4, x2: 4 }, opacity: 0 },
-                    { attr: { x1: 4, x2: 12 }, opacity: 1, duration: 0.4, ease: "power2.out" } // Spawn
-                )
-                    .to(".scan-pulse", {
-                        attr: { x1: 20, x2: 28 },
-                        duration: 1.2,
-                        ease: "power1.inOut"
-                    }) // Travel
-                    .to(".scan-pulse", {
-                        attr: { x1: 28, x2: 28 },
-                        opacity: 0,
-                        duration: 0.3,
-                        ease: "power2.in"
-                    }); // Vanish
+                if (hasEl(".scan-pulse")) {
+                    const tlSpeed = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+                    tlSpeed.fromTo(".scan-pulse",
+                        { attr: { x1: 4, x2: 4 }, opacity: 0 },
+                        { attr: { x1: 4, x2: 12 }, opacity: 1, duration: 0.4, ease: "power2.out" } // Spawn
+                    )
+                        .to(".scan-pulse", {
+                            attr: { x1: 20, x2: 28 },
+                            duration: 1.2,
+                            ease: "power1.inOut"
+                        }) // Travel
+                        .to(".scan-pulse", {
+                            attr: { x1: 28, x2: 28 },
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: "power2.in"
+                        }); // Vanish
+                }
 
                 // 2. COST: Ledger Fill & Node Blink
-                const tlCost = gsap.timeline({ repeat: -1, repeatDelay: 3 });
-                tlCost.to(".ledger-fill", {
-                    strokeDashoffset: 0,
-                    duration: 1.5,
-                    ease: "expo.inOut"
-                })
-                    .to(".ledger-dot", { opacity: 1, duration: 0.1, yoyo: true, repeat: 3 }, "-=0.5")
-                    .to(".ledger-fill", {
-                        opacity: 0,
-                        duration: 0.5
-                    }, "+=0.5")
-                    .set(".ledger-fill", { strokeDashoffset: 20, opacity: 1 }); // Reset
+                if (hasEl(".ledger-fill")) {
+                    const tlCost = gsap.timeline({ repeat: -1, repeatDelay: 3 });
+                    tlCost.to(".ledger-fill", {
+                        strokeDashoffset: 0,
+                        duration: 1.5,
+                        ease: "expo.inOut"
+                    })
+                        .to(".ledger-dot", { opacity: 1, duration: 0.1, yoyo: true, repeat: 3 }, "-=0.5")
+                        .to(".ledger-fill", {
+                            opacity: 0,
+                            duration: 0.5
+                        }, "+=0.5")
+                        .set(".ledger-fill", { strokeDashoffset: 20, opacity: 1 }); // Reset
 
-                // 3. UPTIME: Continuous Orbit
-                const tlUptime = gsap.to(".orbit-group", {
-                    rotation: 360,
-                    duration: 8,
-                    repeat: -1,
-                    ease: "none"
-                });
+                    // 3. UPTIME: Continuous Orbit
+                    if (hasEl(".orbit-group")) {
+                        const tlUptime = gsap.to(".orbit-group", {
+                            rotation: 360,
+                            duration: 8,
+                            repeat: -1,
+                            ease: "none"
+                        });
 
-                // HOVER INTENSIFICATION (Speed Up/Glow)
-                const addHover = (id, tl, scale = 2) => {
-                    const el = document.getElementById(id);
-                    if (!el) return;
-                    el.addEventListener('mouseenter', () => gsap.to(tl, { timeScale: scale, duration: 0.5 }));
-                    el.addEventListener('mouseleave', () => gsap.to(tl, { timeScale: 1, duration: 0.5 }));
-                };
-
-                addHover("statSpeed", tlSpeed, 2.5);
-                addHover("statCost", tlCost, 2.0);
-                addHover("statUptime", tlUptime, 3.0);
-            }
-
-            // --- SECTION 3: SOLANA VELOCITY ENGINE ---
-            function initSolanaEngine() {
-                const canvas = document.getElementById('solanaCanvas');
-                const container = document.getElementById('sectionSolana');
-                if (!canvas || !container) return;
-
-                const ctx = canvas.getContext('2d');
-                let width, height;
-                let particles = [];
-                let mouse = { x: -9999, y: -9999, active: false };
-
-                // Resize & Setup
-                const resize = () => {
-                    width = container.offsetWidth;
-                    height = container.offsetHeight;
-                    canvas.width = width;
-                    canvas.height = height;
-                    initParticles();
-                };
-
-                // Mouse Tracking
-                container.addEventListener('mousemove', (e) => {
-                    const rect = container.getBoundingClientRect();
-                    mouse.x = e.clientX - rect.left;
-                    mouse.y = e.clientY - rect.top;
-                    mouse.active = true;
-                });
-
-                container.addEventListener('mouseleave', () => {
-                    mouse.active = false;
-                    mouse.x = -9999;
-                });
-
-                // Particle Class (Velocity Lines)
-                class Particle {
-                    constructor() {
-                        this.reset();
+                        // HOVER INTENSIFICATION for uptime
+                        const addHoverUptime = (id, tl, scale = 2) => {
+                            const el = document.getElementById(id);
+                            if (!el) return;
+                            el.addEventListener('mouseenter', () => gsap.to(tl, { timeScale: scale, duration: 0.5 }));
+                            el.addEventListener('mouseleave', () => gsap.to(tl, { timeScale: 1, duration: 0.5 }));
+                        };
+                        addHoverUptime("statUptime", tlUptime, 3.0);
                     }
-                    reset() {
-                        this.x = Math.random() * width;
-                        this.y = Math.random() * height;
-                        this.z = Math.random() * 2 + 0.5; // Depth speed multiplier
-                        this.length = Math.random() * 100 + 20;
-                        this.opacity = Math.random() * 0.15 + 0.05; // Faint default
-                        this.speed = Math.random() * 15 + 5;
+                } // End .ledger-fill
 
-                        // Interaction Physics
-                        this.vx = 0;
-                        this.vy = 0;
-                    }
-                    update(scrollSpeed) {
-                        // 1. Base Flow (Leftward)
-                        let dx = (this.speed * this.z) + (scrollSpeed * 2);
+                // --- SECTION 3: SOLANA VELOCITY ENGINE ---
+                function initSolanaEngine() {
+                    const canvas = document.getElementById('solanaCanvas');
+                    const container = document.getElementById('sectionSolana');
+                    if (!canvas || !container) return;
 
-                        // 2. Mouse Interaction (Repulsion)
-                        if (mouse.active) {
-                            const distDx = this.x - mouse.x;
-                            const distDy = this.y - mouse.y;
-                            const dist = Math.sqrt(distDx * distDx + distDy * distDy);
+                    const ctx = canvas.getContext('2d');
+                    let width, height;
+                    let particles = [];
+                    let mouse = { x: -9999, y: -9999, active: false };
 
-                            if (dist < 150) { // Interaction Radius
-                                const force = (150 - dist) / 150; // 0 to 1
-                                const angle = Math.atan2(distDy, distDx);
-
-                                // Explode force
-                                this.vx += Math.cos(angle) * force * 2;
-                                this.vy += Math.sin(angle) * force * 2;
-                            }
-                        }
-
-                        // Apply Physics
-                        this.x -= dx - this.vx; // Subtract vx because flow is left, so positive vx pushes right (against flow)
-                        this.y += this.vy;
-
-                        // Friction / Damping
-                        this.vx *= 0.92;
-                        this.vy *= 0.92;
-
-                        // Wrap
-                        if (this.x < -this.length * 2) {
-                            this.x = width + Math.random() * 200;
-                            this.y = Math.random() * height;
-                            this.vx = 0;
-                            this.vy = 0;
-                        }
-                        // Vertical Wrap (if exploded off screen)
-                        if (this.y < -50) this.y = height + 50;
-                        if (this.y > height + 50) this.y = -50;
-                    }
-
-                    draw(ctx) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 0, 0, ${this.opacity})`;
-                        // Thinner lines for depth
-                        ctx.lineWidth = 1 * this.z;
-
-                        // Angle calculation based on velocity (Dynamic tilt)
-                        // If exploded, line should tilt 
-                        let angle = 0;
-                        if (Math.abs(this.vy) > 0.1) {
-                            // Simple tilt approximation
-                        }
-
-                        ctx.moveTo(this.x, this.y);
-                        // Streak tail follows velocity vector roughly
-                        // But simplify: just draw horizontal line + vy offset
-                        ctx.lineTo(this.x + this.length * this.z, this.y - this.vy * 5);
-                        ctx.stroke();
-                    }
-                }
-
-                function initParticles() {
-                    particles = [];
-                    const count = window.innerWidth < 900 ? 500 : 2000; // Optimize for mobile
-                    for (let i = 0; i < count; i++) {
-                        particles.push(new Particle());
-                    }
-                }
-
-                // Animation Loop
-                let scrollSpeed = 0;
-                let lastScroll = window.scrollY;
-
-                function animate() {
-                    ctx.clearRect(0, 0, width, height);
-
-                    // Calculate virtual speed from scroll delta
-                    const currentScroll = window.scrollY;
-                    const delta = currentScroll - lastScroll;
-                    scrollSpeed += (Math.abs(delta) - scrollSpeed) * 0.1; // Smooth damp
-                    lastScroll = currentScroll;
-
-                    particles.forEach(p => {
-                        p.update(scrollSpeed);
-                        p.draw(ctx);
-                    });
-
-                    // Occasional Green Spark
-                    if (Math.random() > 0.98) {
-                        const x = Math.random() * width;
-                        const y = Math.random() * height;
-                        ctx.fillStyle = 'rgba(57, 255, 20, 0.4)';
-                        ctx.fillRect(x, y, Math.random() * 50 + 20, 2);
-                    }
-
-                    requestAnimationFrame(animate);
-                }
-
-                window.addEventListener('resize', resize);
-                resize();
-                animate();
-
-                // GSAP Triggers (Keep existing parallax code...)
-                // We must re-init generic GSAP triggers here if not kept outside
-                // But the previous code had them inside. I will replicate them.
-                gsap.to(".layer-deep", {
-                    yPercent: 20,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#sectionSolana",
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-                gsap.to(".layer-mid", {
-                    yPercent: 10,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#sectionSolana",
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-
-                // Defensive Init for Solana Cards
-                const solanaCards = gsap.utils.toArray(".solana-features .solana-card");
-                if (solanaCards.length > 0) {
-                    gsap.fromTo(solanaCards,
-                        { y: 50, autoAlpha: 0 },
-                        {
-                            y: 0,
-                            autoAlpha: 1,
-                            duration: 0.8,
-                            stagger: 0.15,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: ".solana-features",
-                                start: "top 75%",
-                                toggleActions: "play none none none",
-                                invalidateOnRefresh: true
-                            }
-                        }
-                    );
-                }
-
-                gsap.from(".tech-stack", {
-                    opacity: 0,
-                    y: 20,
-                    duration: 1,
-                    delay: 0.5,
-                    scrollTrigger: {
-                        trigger: ".solana-features",
-                        start: "top 60%"
-                    }
-                });
-            }
-            initSolanaEngine();
-
-            // --- SECTION 5: LIVING FLUID STREAM (CANVAS SIMULATION) ---
-            function initLivingStream() {
-                const canvas = document.getElementById('simCanvas');
-                const container = document.getElementById('execMonitor');
-                if (!canvas || !container) return;
-
-                const ctx = canvas.getContext('2d');
-                let width, height;
-                let particles = [];
-                let animationId;
-
-                // State Logic
-                let systemState = 'SEARCH'; // SEARCH | LOCK | OPTIMIZED
-                let stateTimer = 0;
-                let mouse = { x: 0, y: 0, active: false };
-
-                // HUD Elements
-                const dot = document.getElementById('streamDot');
-                const statusText = document.getElementById('streamStatus');
-                const readoutVol = document.getElementById('streamDataLeft').querySelector('span:last-child');
-                const readoutRoute = document.getElementById('streamDataRight').querySelector('span:last-child');
-
-                // Configuration (High Contrast Light Theme)
-                const cfg = {
-                    particleCount: 1600,
-                    baseSpeed: 0.8,
-                    colorBase: 'rgba(20, 20, 20, 0.6)', // Much darker, higher opacity for visibility
-                    colorHighlight: 'rgba(0, 160, 40, 0.9)', // Deep, rich green for contrast
-                    searchNoiseScale: 0.005,
-                    lockNoiseScale: 0.001
-                };
-
-                // Resize
-                function resize() {
-                    width = container.clientWidth;
-                    height = container.clientHeight;
-                    // Reset Logic to handle resize
-                    if (width && height) {
+                    // Resize & Setup
+                    const resize = () => {
+                        width = container.offsetWidth;
+                        height = container.offsetHeight;
                         canvas.width = width;
                         canvas.height = height;
                         initParticles();
+                    };
+
+                    // Mouse Tracking
+                    container.addEventListener('mousemove', (e) => {
+                        const rect = container.getBoundingClientRect();
+                        mouse.x = e.clientX - rect.left;
+                        mouse.y = e.clientY - rect.top;
+                        mouse.active = true;
+                    });
+
+                    container.addEventListener('mouseleave', () => {
+                        mouse.active = false;
+                        mouse.x = -9999;
+                    });
+
+                    // Particle Class (Velocity Lines)
+                    class Particle {
+                        constructor() {
+                            this.reset();
+                        }
+                        reset() {
+                            this.x = Math.random() * width;
+                            this.y = Math.random() * height;
+                            this.z = Math.random() * 2 + 0.5; // Depth speed multiplier
+                            this.length = Math.random() * 100 + 20;
+                            this.opacity = Math.random() * 0.15 + 0.05; // Faint default
+                            this.speed = Math.random() * 15 + 5;
+
+                            // Interaction Physics
+                            this.vx = 0;
+                            this.vy = 0;
+                        }
+                        update(scrollSpeed) {
+                            // 1. Base Flow (Leftward)
+                            let dx = (this.speed * this.z) + (scrollSpeed * 2);
+
+                            // 2. Mouse Interaction (Repulsion)
+                            if (mouse.active) {
+                                const distDx = this.x - mouse.x;
+                                const distDy = this.y - mouse.y;
+                                const dist = Math.sqrt(distDx * distDx + distDy * distDy);
+
+                                if (dist < 150) { // Interaction Radius
+                                    const force = (150 - dist) / 150; // 0 to 1
+                                    const angle = Math.atan2(distDy, distDx);
+
+                                    // Explode force
+                                    this.vx += Math.cos(angle) * force * 2;
+                                    this.vy += Math.sin(angle) * force * 2;
+                                }
+                            }
+
+                            // Apply Physics
+                            this.x -= dx - this.vx; // Subtract vx because flow is left, so positive vx pushes right (against flow)
+                            this.y += this.vy;
+
+                            // Friction / Damping
+                            this.vx *= 0.92;
+                            this.vy *= 0.92;
+
+                            // Wrap
+                            if (this.x < -this.length * 2) {
+                                this.x = width + Math.random() * 200;
+                                this.y = Math.random() * height;
+                                this.vx = 0;
+                                this.vy = 0;
+                            }
+                            // Vertical Wrap (if exploded off screen)
+                            if (this.y < -50) this.y = height + 50;
+                            if (this.y > height + 50) this.y = -50;
+                        }
+
+                        draw(ctx) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(0, 0, 0, ${this.opacity})`;
+                            // Thinner lines for depth
+                            ctx.lineWidth = 1 * this.z;
+
+                            // Angle calculation based on velocity (Dynamic tilt)
+                            // If exploded, line should tilt 
+                            let angle = 0;
+                            if (Math.abs(this.vy) > 0.1) {
+                                // Simple tilt approximation
+                            }
+
+                            ctx.moveTo(this.x, this.y);
+                            // Streak tail follows velocity vector roughly
+                            // But simplify: just draw horizontal line + vy offset
+                            ctx.lineTo(this.x + this.length * this.z, this.y - this.vy * 5);
+                            ctx.stroke();
+                        }
                     }
+
+                    function initParticles() {
+                        particles = [];
+                        const count = window.innerWidth < 900 ? 500 : 2000; // Optimize for mobile
+                        for (let i = 0; i < count; i++) {
+                            particles.push(new Particle());
+                        }
+                    }
+
+                    // Animation Loop
+                    let scrollSpeed = 0;
+                    let lastScroll = window.scrollY;
+
+                    function animate() {
+                        ctx.clearRect(0, 0, width, height);
+
+                        // Calculate virtual speed from scroll delta
+                        const currentScroll = window.scrollY;
+                        const delta = currentScroll - lastScroll;
+                        scrollSpeed += (Math.abs(delta) - scrollSpeed) * 0.1; // Smooth damp
+                        lastScroll = currentScroll;
+
+                        particles.forEach(p => {
+                            p.update(scrollSpeed);
+                            p.draw(ctx);
+                        });
+
+                        // Occasional Green Spark
+                        if (Math.random() > 0.98) {
+                            const x = Math.random() * width;
+                            const y = Math.random() * height;
+                            ctx.fillStyle = 'rgba(57, 255, 20, 0.4)';
+                            ctx.fillRect(x, y, Math.random() * 50 + 20, 2);
+                        }
+
+                        requestAnimationFrame(animate);
+                    }
+
+                    window.addEventListener('resize', resize);
+                    resize();
+                    animate();
+
+                    // GSAP Triggers (Keep existing parallax code...)
+                    // We must re-init generic GSAP triggers here if not kept outside
+                    // But the previous code had them inside. I will replicate them.
+                    gsap.to(".layer-deep", {
+                        yPercent: 20,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: "#sectionSolana",
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                    gsap.to(".layer-mid", {
+                        yPercent: 10,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: "#sectionSolana",
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+
+                    // Defensive Init for Solana Cards
+                    const solanaCards = gsap.utils.toArray(".solana-features .solana-card");
+                    if (solanaCards.length > 0) {
+                        gsap.fromTo(solanaCards,
+                            { y: 50, autoAlpha: 0 },
+                            {
+                                y: 0,
+                                autoAlpha: 1,
+                                duration: 0.8,
+                                stagger: 0.15,
+                                ease: "power2.out",
+                                scrollTrigger: {
+                                    trigger: ".solana-features",
+                                    start: "top 75%",
+                                    toggleActions: "play none none none",
+                                    invalidateOnRefresh: true
+                                }
+                            }
+                        );
+                    }
+
+                    gsap.from(".tech-stack", {
+                        opacity: 0,
+                        y: 20,
+                        duration: 1,
+                        delay: 0.5,
+                        scrollTrigger: {
+                            trigger: ".solana-features",
+                            start: "top 60%"
+                        }
+                    });
                 }
-                window.addEventListener('resize', resize);
-                // Note: resize() is called AFTER Particle class is defined (see below)
+                initSolanaEngine();
 
-                // Mouse Interaction
-                container.addEventListener('mousemove', (e) => {
-                    const rect = container.getBoundingClientRect();
-                    mouse.x = e.clientX - rect.left;
-                    mouse.y = e.clientY - rect.top;
-                    mouse.active = true;
-                    // Reset active flag after inactivity
-                    clearTimeout(mouse.timer);
-                    mouse.timer = setTimeout(() => { mouse.active = false; }, 1000);
-                });
+                // --- SECTION 5: LIVING FLUID STREAM (CANVAS SIMULATION) ---
+                function initLivingStream() {
+                    const canvas = document.getElementById('simCanvas');
+                    const container = document.getElementById('execMonitor');
+                    if (!canvas || !container) return;
 
-                // Particle Class
-                class Particle {
-                    constructor() {
-                        this.reset();
+                    const ctx = canvas.getContext('2d');
+                    let width, height;
+                    let particles = [];
+                    let animationId;
+
+                    // State Logic
+                    let systemState = 'SEARCH'; // SEARCH | LOCK | OPTIMIZED
+                    let stateTimer = 0;
+                    let mouse = { x: 0, y: 0, active: false };
+
+                    // HUD Elements
+                    const dot = document.getElementById('streamDot');
+                    const statusText = document.getElementById('streamStatus');
+                    const readoutVol = document.getElementById('streamDataLeft').querySelector('span:last-child');
+                    const readoutRoute = document.getElementById('streamDataRight').querySelector('span:last-child');
+
+                    // Configuration (High Contrast Light Theme)
+                    const cfg = {
+                        particleCount: 1600,
+                        baseSpeed: 0.8,
+                        colorBase: 'rgba(20, 20, 20, 0.6)', // Much darker, higher opacity for visibility
+                        colorHighlight: 'rgba(0, 160, 40, 0.9)', // Deep, rich green for contrast
+                        searchNoiseScale: 0.005,
+                        lockNoiseScale: 0.001
+                    };
+
+                    // Resize
+                    function resize() {
+                        width = container.clientWidth;
+                        height = container.clientHeight;
+                        // Reset Logic to handle resize
+                        if (width && height) {
+                            canvas.width = width;
+                            canvas.height = height;
+                            initParticles();
+                        }
                     }
+                    window.addEventListener('resize', resize);
+                    // Note: resize() is called AFTER Particle class is defined (see below)
 
-                    reset() {
-                        this.x = Math.random() * width;
-                        this.y = Math.random() * height;
-                        this.vx = 0;
-                        this.vy = 0;
-                        this.age = Math.random() * 100;
-                        this.life = 100 + Math.random() * 200;
-                        this.size = Math.random() * 1.5;
-                        this.focused = false;
-                    }
+                    // Mouse Interaction
+                    container.addEventListener('mousemove', (e) => {
+                        const rect = container.getBoundingClientRect();
+                        mouse.x = e.clientX - rect.left;
+                        mouse.y = e.clientY - rect.top;
+                        mouse.active = true;
+                        // Reset active flag after inactivity
+                        clearTimeout(mouse.timer);
+                        mouse.timer = setTimeout(() => { mouse.active = false; }, 1000);
+                    });
 
-                    update() {
-                        // 1. Calculate Force Field 
-                        let angle;
-
-                        if (systemState === 'SEARCH') {
-                            // Chaotic Swirls
-                            angle = (Math.cos(this.x * cfg.searchNoiseScale) + Math.sin(this.y * cfg.searchNoiseScale)) * Math.PI * 2;
-                            // Add time variance
-                            angle += Date.now() * 0.0002;
-                        } else {
-                            // LOCK: Streamline 
-                            // Flow towards center vertically, but move right fast
-                            // Laminar Flow
-                            const dy = (height / 2) - this.y;
-                            angle = Math.atan2(dy * 0.05, 1); // Slight curve to center, mostly right
+                    // Particle Class
+                    class Particle {
+                        constructor() {
+                            this.reset();
                         }
 
-                        // 2. Physics
-                        // Target velocity vector
-                        const speed = systemState === 'LOCK' ? cfg.baseSpeed * 8 : cfg.baseSpeed;
-                        const tx = Math.cos(angle) * speed;
-                        const ty = Math.sin(angle) * speed;
+                        reset() {
+                            this.x = Math.random() * width;
+                            this.y = Math.random() * height;
+                            this.vx = 0;
+                            this.vy = 0;
+                            this.age = Math.random() * 100;
+                            this.life = 100 + Math.random() * 200;
+                            this.size = Math.random() * 1.5;
+                            this.focused = false;
+                        }
 
-                        // Easing towards target velocity (Fluidity)
-                        this.vx += (tx - this.vx) * 0.05;
-                        this.vy += (ty - this.vy) * 0.05;
+                        update() {
+                            // 1. Calculate Force Field 
+                            let angle;
 
-                        // 3. Mouse Interaction (Repulsion)
-                        if (mouse.active) {
-                            const dx = this.x - mouse.x;
-                            const dy = this.y - mouse.y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < 100) {
-                                const force = (100 - dist) / 100;
-                                const ang = Math.atan2(dy, dx);
-                                this.vx += Math.cos(ang) * force * 2;
-                                this.vy += Math.sin(ang) * force * 2;
+                            if (systemState === 'SEARCH') {
+                                // Chaotic Swirls
+                                angle = (Math.cos(this.x * cfg.searchNoiseScale) + Math.sin(this.y * cfg.searchNoiseScale)) * Math.PI * 2;
+                                // Add time variance
+                                angle += Date.now() * 0.0002;
+                            } else {
+                                // LOCK: Streamline 
+                                // Flow towards center vertically, but move right fast
+                                // Laminar Flow
+                                const dy = (height / 2) - this.y;
+                                angle = Math.atan2(dy * 0.05, 1); // Slight curve to center, mostly right
+                            }
+
+                            // 2. Physics
+                            // Target velocity vector
+                            const speed = systemState === 'LOCK' ? cfg.baseSpeed * 8 : cfg.baseSpeed;
+                            const tx = Math.cos(angle) * speed;
+                            const ty = Math.sin(angle) * speed;
+
+                            // Easing towards target velocity (Fluidity)
+                            this.vx += (tx - this.vx) * 0.05;
+                            this.vy += (ty - this.vy) * 0.05;
+
+                            // 3. Mouse Interaction (Repulsion)
+                            if (mouse.active) {
+                                const dx = this.x - mouse.x;
+                                const dy = this.y - mouse.y;
+                                const dist = Math.sqrt(dx * dx + dy * dy);
+                                if (dist < 100) {
+                                    const force = (100 - dist) / 100;
+                                    const ang = Math.atan2(dy, dx);
+                                    this.vx += Math.cos(ang) * force * 2;
+                                    this.vy += Math.sin(ang) * force * 2;
+                                }
+                            }
+
+                            // 4. Move
+                            this.x += this.vx;
+                            this.y += this.vy;
+
+                            // 5. Wrap/Respawn
+                            this.age++;
+                            if (this.age > this.life || this.x > width + 50 || this.x < -50 || this.y > height + 50 || this.y < -50) {
+                                // If locked, respawn on left to maintain stream
+                                if (systemState === 'LOCK') {
+                                    this.x = -10;
+                                    this.y = (height / 2) + (Math.random() - 0.5) * 200;
+                                    this.age = 0;
+                                    this.vx = 5;
+                                } else {
+                                    this.reset();
+                                }
                             }
                         }
 
-                        // 4. Move
-                        this.x += this.vx;
-                        this.y += this.vy;
+                        draw(ctx) {
+                            ctx.beginPath();
+                            let alpha = 1 - (this.age / this.life);
+                            if (alpha < 0) alpha = 0;
 
-                        // 5. Wrap/Respawn
-                        this.age++;
-                        if (this.age > this.life || this.x > width + 50 || this.x < -50 || this.y > height + 50 || this.y < -50) {
-                            // If locked, respawn on left to maintain stream
+                            // "Expensive" style
                             if (systemState === 'LOCK') {
-                                this.x = -10;
-                                this.y = (height / 2) + (Math.random() - 0.5) * 200;
-                                this.age = 0;
-                                this.vx = 5;
+                                // Beam
+                                const closenessToCenter = Math.abs((height / 2) - this.y);
+                                if (closenessToCenter < 50) {
+                                    ctx.strokeStyle = `rgba(0, 200, 50, ${alpha * 0.8})`; // Green punch
+                                    ctx.lineWidth = this.size * 1.5;
+                                } else {
+                                    // Dark debris
+                                    ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.2})`;
+                                    ctx.lineWidth = this.size;
+                                }
                             } else {
-                                this.reset();
-                            }
-                        }
-                    }
-
-                    draw(ctx) {
-                        ctx.beginPath();
-                        let alpha = 1 - (this.age / this.life);
-                        if (alpha < 0) alpha = 0;
-
-                        // "Expensive" style
-                        if (systemState === 'LOCK') {
-                            // Beam
-                            const closenessToCenter = Math.abs((height / 2) - this.y);
-                            if (closenessToCenter < 50) {
-                                ctx.strokeStyle = `rgba(0, 200, 50, ${alpha * 0.8})`; // Green punch
-                                ctx.lineWidth = this.size * 1.5;
-                            } else {
-                                // Dark debris
-                                ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.2})`;
+                                // Ambient fluid (Dark on light)
+                                ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.15})`; // Subtle Ink
                                 ctx.lineWidth = this.size;
                             }
-                        } else {
-                            // Ambient fluid (Dark on light)
-                            ctx.strokeStyle = `rgba(0, 0, 0, ${alpha * 0.15})`; // Subtle Ink
-                            ctx.lineWidth = this.size;
+
+                            // Draw trail (short)
+                            ctx.moveTo(this.x, this.y);
+                            // Back trace
+                            ctx.lineTo(this.x - this.vx * 4, this.y - this.vy * 4);
+                            ctx.stroke();
+                        }
+                    }
+
+                    function initParticles() {
+                        particles = [];
+                        for (let i = 0; i < cfg.particleCount; i++) {
+                            particles.push(new Particle());
+                        }
+                    }
+
+                    // Main Loop
+                    function animate() {
+                        stateTimer++;
+
+                        // Logic: 5s Search -> 2s Lock -> 1s Optimized (Flash) -> Reset
+                        if (systemState === 'SEARCH' && stateTimer > 300) {
+                            systemState = 'LOCK';
+                            stateTimer = 0;
+                            // HUD Update
+                            statusText.innerText = "OPTIMIZING...";
+                            statusText.style.color = "#00B432"; // Darker Green
+                            dot.style.background = "#000";
+                            readoutRoute.innerText = "CONVERGING";
+                        } else if (systemState === 'LOCK' && stateTimer > 120) {
+                            systemState = 'OPTIMIZED';
+                            stateTimer = 0;
+                            // Flash
+                            statusText.innerText = "LOCKED";
+                            readoutRoute.innerText = "ROUTE FOUND";
+                            gsap.to(dot, {
+                                scale: 2, opacity: 0, duration: 0.5, onComplete: () => {
+                                    gsap.set(dot, { scale: 1, opacity: 1 });
+                                }
+                            });
+                        } else if (systemState === 'OPTIMIZED' && stateTimer > 60) {
+                            systemState = 'SEARCH';
+                            stateTimer = 0;
+                            statusText.innerText = "SCANNING...";
+                            statusText.style.color = "#000";
+                            dot.style.background = "#39FF14";
+                            readoutRoute.innerText = "CALCULATING";
                         }
 
-                        // Draw trail (short)
-                        ctx.moveTo(this.x, this.y);
-                        // Back trace
-                        ctx.lineTo(this.x - this.vx * 4, this.y - this.vy * 4);
-                        ctx.stroke();
-                    }
-                }
+                        // Render (Light Paper Trail)
+                        // We fill with WHITE with higher opacity (0.3) to clear trails faster = crisper movement
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                        ctx.fillRect(0, 0, width, height);
 
-                function initParticles() {
-                    particles = [];
-                    for (let i = 0; i < cfg.particleCount; i++) {
-                        particles.push(new Particle());
-                    }
-                }
-
-                // Main Loop
-                function animate() {
-                    stateTimer++;
-
-                    // Logic: 5s Search -> 2s Lock -> 1s Optimized (Flash) -> Reset
-                    if (systemState === 'SEARCH' && stateTimer > 300) {
-                        systemState = 'LOCK';
-                        stateTimer = 0;
-                        // HUD Update
-                        statusText.innerText = "OPTIMIZING...";
-                        statusText.style.color = "#00B432"; // Darker Green
-                        dot.style.background = "#000";
-                        readoutRoute.innerText = "CONVERGING";
-                    } else if (systemState === 'LOCK' && stateTimer > 120) {
-                        systemState = 'OPTIMIZED';
-                        stateTimer = 0;
-                        // Flash
-                        statusText.innerText = "LOCKED";
-                        readoutRoute.innerText = "ROUTE FOUND";
-                        gsap.to(dot, {
-                            scale: 2, opacity: 0, duration: 0.5, onComplete: () => {
-                                gsap.set(dot, { scale: 1, opacity: 1 });
-                            }
+                        particles.forEach(p => {
+                            p.update();
+                            p.draw(ctx);
                         });
-                    } else if (systemState === 'OPTIMIZED' && stateTimer > 60) {
-                        systemState = 'SEARCH';
-                        stateTimer = 0;
-                        statusText.innerText = "SCANNING...";
-                        statusText.style.color = "#000";
-                        dot.style.background = "#39FF14";
-                        readoutRoute.innerText = "CALCULATING";
+
+                        animationId = requestAnimationFrame(animate);
                     }
 
-                    // Render (Light Paper Trail)
-                    // We fill with WHITE with higher opacity (0.3) to clear trails faster = crisper movement
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-                    ctx.fillRect(0, 0, width, height);
+                    // Trigger resizing to ensure context is right
+                    // initParticles handled in resize
+                    resize();
 
-                    particles.forEach(p => {
-                        p.update();
-                        p.draw(ctx);
-                    });
-
-                    animationId = requestAnimationFrame(animate);
+                    // Check reduced motion
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        // Fade in canvas
+                        document.querySelector('.stream-canvas').style.opacity = 1;
+                        animate();
+                    }
                 }
 
-                // Trigger resizing to ensure context is right
-                // initParticles handled in resize
-                resize();
+                // Init Option B
+                initLivingStream();
 
-                // Check reduced motion
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    // Fade in canvas
-                    document.querySelector('.stream-canvas').style.opacity = 1;
-                    animate();
-                }
-            }
+                // --- SECTION 7: JARVIS BRAIN ANIMATION ---
+                const brainTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#sectionPersonal",
+                        start: "top 60%",
+                        toggleActions: "play pause resume pause"
+                    }
+                });
 
-            // Init Option B
-            initLivingStream();
+                // 1. Entrance: Brain Core appears
+                if (hasEl(".brain-core")) brainTl.from(".brain-core", { scale: 0, opacity: 0, duration: 1, ease: "back.out(1.7)" });
 
-            // --- SECTION 7: JARVIS BRAIN ANIMATION ---
-            const brainTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#sectionPersonal",
-                    start: "top 60%",
-                    toggleActions: "play pause resume pause"
-                }
-            });
-
-            // 1. Entrance: Brain Core appears
-            brainTl.from(".brain-core", { scale: 0, opacity: 0, duration: 1, ease: "back.out(1.7)" });
-
-            // 2. Paths Draw Out (staggered)
-            brainTl.from(".brain-path", {
-                drawSVG: "0%",
-                opacity: 0,
-                duration: 1.2,
-                stagger: 0.2,
-                ease: "power2.out"
-            }, "-=0.5");
-
-            // 3. Landing Spots & Labels Appear
-            brainTl.to(".brain-spot", {
-                opacity: 1,
-                duration: 0.6,
-                stagger: 0.15,
-                ease: "power1.out"
-            }, "-=0.5");
-
-            // 4. Ripple on each landing spot
-            brainTl.to(".spot-ripple", {
-                scale: 2,
-                opacity: 0.5,
-                duration: 0.4,
-                stagger: 0.15,
-                ease: "power1.out"
-            }, "-=0.6")
-                .to(".spot-ripple", {
-                    scale: 3,
+                // 2. Paths Draw Out (staggered)
+                if (hasEl(".brain-path")) brainTl.from(".brain-path", {
+                    drawSVG: "0%",
                     opacity: 0,
+                    duration: 1.2,
+                    stagger: 0.2,
+                    ease: "power2.out"
+                }, "-=0.5");
+
+                // 3. Landing Spots & Labels Appear
+                if (hasEl(".brain-spot")) brainTl.to(".brain-spot", {
+                    opacity: 1,
                     duration: 0.6,
-                    stagger: 0.15
-                });
+                    stagger: 0.15,
+                    ease: "power1.out"
+                }, "-=0.5");
 
-            // 5. Idle Loop: Continuous path activity pulse
-            function pulseRandomPath() {
-                const paths = ["#bpath-1", "#bpath-2", "#bpath-3", "#bpath-4"];
-                const path = paths[Math.floor(Math.random() * paths.length)];
+                // 4. Ripple on each landing spot
+                if (hasEl(".spot-ripple")) {
+                    brainTl.to(".spot-ripple", {
+                        scale: 2,
+                        opacity: 0.5,
+                        duration: 0.4,
+                        stagger: 0.15,
+                        ease: "power1.out"
+                    }, "-=0.6")
+                        .to(".spot-ripple", {
+                            scale: 3,
+                            opacity: 0,
+                            duration: 0.6,
+                            stagger: 0.15
+                        });
+                }
 
-                gsap.to(path, {
-                    stroke: "#39FF14",
-                    strokeWidth: 3,
-                    duration: 0.3,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: "power1.inOut",
-                    onComplete: () => {
-                        gsap.set(path, { stroke: "url(#path-grad)", strokeWidth: 2 });
-                        gsap.delayedCall(Math.random() * 3 + 1.5, pulseRandomPath);
-                    }
-                });
-            }
+                // NOTE: pulseRandomPath removed - it targeted nonexistent #bpath elements
 
-            // Start after entrance
-            brainTl.add(() => pulseRandomPath(), "+=1");
+                // Start after entrance - pulseRandomPath call removed
 
-            // Slower Video Background
-            const vizVideo = document.querySelector('.monitor-video-bg');
-            if (vizVideo) {
-                vizVideo.playbackRate = 0.7;
-            }
+                // Slower Video Background
+                const vizVideo = document.querySelector('.monitor-video-bg');
+                if (vizVideo) {
+                    vizVideo.playbackRate = 0.7;
+                }
 
-            // --- FOOTER SECTION PARALLAX + GRID ---
-            const finalSection = document.getElementById('sectionFinal');
-            const finalVideo = finalSection?.querySelector('.final-video-bg video');
+                // --- FOOTER SECTION PARALLAX + GRID ---
+                const finalSection = document.getElementById('sectionFinal');
+                const finalVideo = finalSection?.querySelector('.final-video-bg video');
 
-            if (finalSection && finalVideo) {
-                // Mouse Parallax on Video
-                finalSection.addEventListener('mousemove', (e) => {
-                    const rect = finalSection.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
-                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+                if (finalSection && finalVideo) {
+                    // Mouse Parallax on Video
+                    finalSection.addEventListener('mousemove', (e) => {
+                        const rect = finalSection.getBoundingClientRect();
+                        const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+                        const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-                    gsap.to(finalVideo, {
-                        x: x * 30, // 30px max movement
-                        y: y * 20,
-                        duration: 0.8,
-                        ease: "power2.out"
+                        gsap.to(finalVideo, {
+                            x: x * 30, // 30px max movement
+                            y: y * 20,
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
                     });
-                });
 
-                finalSection.addEventListener('mouseleave', () => {
-                    gsap.to(finalVideo, {
-                        x: 0,
-                        y: 0,
-                        duration: 1,
-                        ease: "power2.out"
+                    finalSection.addEventListener('mouseleave', () => {
+                        gsap.to(finalVideo, {
+                            x: 0,
+                            y: 0,
+                            duration: 1,
+                            ease: "power2.out"
+                        });
                     });
-                });
 
-                // Slow video playback
-                finalVideo.playbackRate = 0.6;
-            }
+                    // Slow video playback
+                    finalVideo.playbackRate = 0.6;
+                }
+
+            } // End reduced motion check (prefers-reduced-motion: no-preference)
 
         });
     </script>
-
-    <!-- Three.js CDN (Global - cdnjs) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <!-- Universe 3D Logic (Inline) -->
     <script>
@@ -7695,6 +7764,20 @@ jarvis start --daemon`
                 if (!canvas || !container) {
                     console.warn('Universe 3D: Canvas or container not found.');
                     return;
+                }
+
+                // --- FILE PROTOCOL CHECK ---
+                const isFileProtocol = window.location.protocol === 'file:';
+                if (isFileProtocol) {
+                    console.warn("Running from file:// protocol - textures will fail CORS. Using CSS fallback. Run with a local server for full WebGL experience.");
+                    // Defer fallback creation until function is defined below
+                }
+
+                // --- WEBGL CONTEXT TRACKING ---
+                window.activeWebGLContexts = window.activeWebGLContexts || 0;
+                if (window.activeWebGLContexts >= 4) {
+                    console.warn("WebGL context limit approached, using CSS fallback.");
+                    // Fallback will be created after function definition
                 }
 
                 // --- CSS FALLBACK SYSTEM ---
@@ -7780,6 +7863,12 @@ jarvis start --daemon`
                     }
                 }
 
+                // --- TRIGGER FALLBACKS IF NEEDED ---
+                if (isFileProtocol || window.activeWebGLContexts >= 4) {
+                    createCSSFallback();
+                    return;
+                }
+
                 // Check WebGL 1
                 try {
                     const testCanvas = document.createElement('canvas');
@@ -7832,6 +7921,17 @@ jarvis start --daemon`
                 renderer.toneMapping = THREE.ACESFilmicToneMapping;
                 renderer.toneMappingExposure = 1.2;
 
+                // Track WebGL context
+                window.activeWebGLContexts++;
+
+                // Handle context loss
+                canvas.addEventListener('webglcontextlost', function (e) {
+                    e.preventDefault();
+                    window.activeWebGLContexts = Math.max(0, window.activeWebGLContexts - 1);
+                    console.warn('Universe WebGL context lost, creating fallback.');
+                    createCSSFallback();
+                }, false);
+
                 // --- LIGHTING ---
                 const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
                 scene.add(ambientLight);
@@ -7848,36 +7948,8 @@ jarvis start --daemon`
                 const ringGroup = new THREE.Group();
                 scene.add(ringGroup);
 
-                // HELPER: Generate Procedural Texture (Bypasses file:// CORS issues)
-                function createCardTexture(index) {
-                    const cvs = document.createElement('canvas');
-                    cvs.width = 256;
-                    cvs.height = 350; // Aspect 1.6 : 2.2 approx
-                    const cx = cvs.getContext('2d');
-
-                    // Background
-                    cx.fillStyle = '#f5f5f5';
-                    cx.fillRect(0, 0, 256, 350);
-
-                    // Border
-                    cx.strokeStyle = '#e0e0e0';
-                    cx.lineWidth = 10;
-                    cx.strokeRect(0, 0, 256, 350);
-
-                    // Text
-                    cx.fillStyle = '#111';
-                    cx.font = 'bold 80px Arial';
-                    cx.textAlign = 'center';
-                    cx.textBaseline = 'middle';
-                    cx.fillText(index.toString(), 128, 175);
-
-                    // Accent
-                    cx.fillStyle = '#39FF14';
-                    cx.fillRect(100, 250, 56, 6);
-
-                    const tex = new THREE.CanvasTexture(cvs);
-                    return tex;
-                }
+                // Texture Loader
+                const texLoader = new THREE.TextureLoader();
 
                 const planeGeo = new THREE.PlaneGeometry(1.6, 2.2);
 
@@ -7886,37 +7958,55 @@ jarvis start --daemon`
                     const x = Math.cos(angle) * RADIUS;
                     const z = Math.sin(angle) * RADIUS;
 
-                    // Use Procedural Texture
-                    const tex = createCardTexture(i);
-
-                    // 2. Setup Material (Glassy)
+                    // Create material first without texture
                     const mat = new THREE.MeshPhysicalMaterial({
-                        map: tex,
                         color: 0xffffff,
                         transparent: true,
                         side: THREE.DoubleSide,
                         roughness: 0.2,
                         metalness: 0.1,
-                        clearcoat: 1.0,
-                        clearcoatRoughness: 0.1
+                        transmission: 0.0,
+                        opacity: 1.0
                     });
 
-                    // 3. Attempt Image Load (Async)
-                    const imgLoader = new THREE.TextureLoader();
-                    imgLoader.load(i + '.png', (loadedTex) => {
-                        mat.map = loadedTex;
-                        mat.needsUpdate = true;
-                    });
+                    // Load texture with error handling
+                    texLoader.load(
+                        i + '.png',
+                        (tex) => {
+                            tex.encoding = THREE.sRGBEncoding;
+                            mat.map = tex;
+                            mat.needsUpdate = true;
+                        },
+                        undefined,
+                        (err) => {
+                            console.warn(`Texture ${i}.png failed to load`);
+                        }
+                    );
 
-                    const mesh = new THREE.Mesh(planeGeo, mat);
-                    mesh.position.set(x, 0, z);
-                    mesh.lookAt(0, 0, 0);
-                    mesh.rotation.y += Math.PI;
+                    const card = new THREE.Mesh(planeGeo, mat);
 
-                    // Store initial Y for animation
-                    mesh.userData = { initialY: 0, randomOffset: Math.random() * 100 };
+                    // Position
+                    card.position.set(x, 0, z);
 
-                    ringGroup.add(mesh);
+                    // Look outward
+                    card.lookAt(0, 0, 0);
+                    card.rotateY(Math.PI); // Flip to face out
+
+                    // Add Green Accent Bar (Bottom)
+                    const barGeo = new THREE.PlaneGeometry(1.6, 0.05);
+                    const barMat = new THREE.MeshBasicMaterial({ color: 0x39FF14 });
+                    const bar = new THREE.Mesh(barGeo, barMat);
+                    bar.position.y = -1.1; // Bottom edge
+                    bar.position.z = 0.01;
+                    card.add(bar);
+
+                    // User Data for Hover
+                    card.userData = {
+                        id: i,
+                        originalY: 0
+                    };
+
+                    ringGroup.add(card);
                 }
 
                 // --- PARTICLES (ENHANCED) ---
@@ -8024,7 +8114,7 @@ jarvis start --daemon`
             })();
         });
     </script>
-    <script src="token_engine.js"></script>
+    <script src="token_visual.js"></script>
 </body>
 
 </html>

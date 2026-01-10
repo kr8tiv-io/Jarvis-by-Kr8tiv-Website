@@ -73,7 +73,7 @@ This repository contains the premium landing page featuring:
 - **Personal AI** — Voice command interface teaser
 - **Privacy/Watcher** — Shield animation with privacy messaging
 - **Building in Public** — GitHub commit timeline
-- **Token Section** — Chrome-styled $KR8TIV token display
+- **Token Section** — "Living Network" Kinetic Visualization with rotating orbits and pulse effects
 - **Roadmap** — Phase-based development milestones
 - **Community** — Social integration and engagement CTAs
 - **Final CTA** — Path cards for users and developers
@@ -130,6 +130,7 @@ Join the movement:
 
 ### Recent Updates
 - **[Latest]** NanoBanana Route Visualization - Complete animated route monitoring system with gradient effects, packet animations, and node pulsing
+- **[New]** "Living Network" Token Engine - Interactive Canvas 2D visualization with rotating orbit labels, pulsing rings, and mouse-reactive particles
 - Full changelog available in [CHANGELOG.md](./CHANGELOG.md)
 
 ---
