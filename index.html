@@ -75,8 +75,16 @@
             position: relative;
             z-index: 1;
             isolation: isolate;
+            /* GPU compositing for section isolation — does NOT break
+               GSAP pinning because transform is on the pinned element
+               itself, not on a parent containing block. */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
+        }
+
+        /* Prevent hero video bleed when GSAP pin-spacer is visible */
+        .pin-spacer {
+            background-color: inherit;
         }
 
         /* --- MOBILE VIDEO POP-THROUGH FIX --- */
@@ -1387,10 +1395,10 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            will-change: transform;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-overflow-scrolling: auto;
+            /* NOTE: Do NOT add transform or will-change here — it breaks
+               GSAP position:fixed pinning (e.g. manifesto marquee).
+               transform creates a new containing block that makes
+               position:fixed behave like position:absolute. */
         }
 
         /* Hero Section Content */
@@ -6534,11 +6542,19 @@ jarvis start --daemon`
                         scrollTrigger: {
                             trigger: ".manifesto-section",
                             pin: true,
+                            pinSpacing: true,
                             scrub: 1.2,
                             start: "top top",
                             end: () => "+=" + (isMobile ? 2200 : 2000),
                             invalidateOnRefresh: true,
-                            anticipatePin: 1
+                            anticipatePin: 1,
+                            onRefresh: function(self) {
+                                // Ensure pin-spacer has opaque bg to prevent hero video bleed
+                                if (self.spacer) {
+                                    self.spacer.style.backgroundColor = '#FFFFFF';
+                                    self.spacer.style.zIndex = '60';
+                                }
+                            }
                         }
                     });
 
