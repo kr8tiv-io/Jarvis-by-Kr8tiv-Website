@@ -93,6 +93,11 @@
                 position: absolute;
                 height: var(--hero-height);
             }
+
+            /* Ensure all sections are opaque on mobile to prevent video bleed */
+            .section-privacy {
+                background-color: var(--bg-dark);
+            }
         }
 
         /* --- GLOBAL H1 HOVER GLOW --- */
@@ -1698,6 +1703,19 @@
             border-color: #FFF;
             background: rgba(255, 255, 255, 0.05);
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Dark variant for btn-ghost on white backgrounds */
+        .btn-ghost-dark {
+            color: #0B0C0D;
+            border-color: rgba(11, 12, 13, 0.25);
+        }
+
+        .btn-ghost-dark:hover {
+            color: #0B0C0D;
+            border-color: #0B0C0D;
+            background: rgba(11, 12, 13, 0.06);
+            text-shadow: none;
         }
 
         /* GitHub Button Variant */
@@ -5165,7 +5183,7 @@
         <!-- Tall Hero Section (1100px) -->
         <section class="hero-section">
             <div class="hero-content" id="heroContent">
-                <div class="pill-badge">Pre-Alpha Available Now</div>
+                <div class="pill-badge">Autonomous Trading Pre-Alpha Available Now</div>
                 <h1 class="hero-title">Jarvis is not a chatbot.<br>It's your LifeOS.</h1>
                 <p class="hero-subtitle">Runs locally. Watches, learns, acts, and evolves—24/7 on your Mac. Designed for
                     the luminous future of personal computing.</p>
@@ -5445,10 +5463,10 @@
 
                     <div class="honesty-badge" id="honestyBadge">
                         <div class="status-dot"></div>
-                        <span>Paper trading now. Live soon.</span>
+                        <span>Try our autonomous demo</span>
                     </div>
 
-                    <a href="https://kr8tiv.web.app/" class="cta-link" id="coreCta" target="_blank">See strategy results →</a>
+                    <a href="https://kr8tiv.web.app/" class="cta-link" id="coreCta" target="_blank">Try our autonomous demo →</a>
                 </div>
 
                 <!-- Visuals (Cards) -->
@@ -5748,7 +5766,7 @@
                 <div class="github-cta-row" id="pubCtaRow">
                     <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="btn-primary" target="_blank">View
                         GitHub</a>
-                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website/commits/main" class="btn-ghost"
+                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website/commits/main" class="btn-ghost btn-ghost-dark"
                         target="_blank">See Commits</a>
                 </div>
             </div>
@@ -6431,7 +6449,7 @@ jarvis start --daemon`
                         <div class="path-icon" style="color: #39FF14;">$</div>
                         <h3 class="path-title">Acquire Signal</h3>
                         <p class="path-desc">$KR8TIV is the currency of attention. Fair launch on Bags.</p>
-                        <a href="https://bags.fm" class="path-btn path-btn-accent">Buy on Bags.fm</a>
+                        <a href="https://bags.fm/U1zc8QpnrQ3HBJUBrWFYWbQTLzNsCpPgZNegWXdBAGS" class="path-btn path-btn-accent" target="_blank">Buy on Bags.fm</a>
                     </div>
 
                     <!-- Card 3: Upgrade -->
