@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manifesto — Jarvis LifeOS by kr8tiv AI</title>
+
+    <!-- SEO -->
+    <meta name="description" content="everybody deserves access to AI. the kr8tiv AI manifesto — open source, tokenized, ungovernable. building the ultimate context engine on Solana.">
+    <meta name="author" content="kr8tiv AI">
+    <link rel="canonical" href="https://jarvislife.io/manifesto.html">
+    <link rel="icon" type="image/png" href="tab.png">
+
+    <!-- OG -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jarvislife.io/manifesto.html">
+    <meta property="og:title" content="Manifesto — Jarvis LifeOS">
+    <meta property="og:description" content="everybody deserves access to AI. open source. tokenized. ungovernable.">
+    <meta property="og:image" content="https://jarvislife.io/social-share.png">
+    <meta property="og:site_name" content="Jarvis LifeOS">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@kr8tivai">
+    <meta name="twitter:title" content="Manifesto — Jarvis LifeOS">
+    <meta name="twitter:description" content="everybody deserves access to AI. open source. tokenized. ungovernable.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+    <style>
+        :root {
+            --bg-dark: #0B0C0D;
+            --text-white: #FFFFFF;
+            --text-grey: #a0a0a0;
+            --accent: #39FF14;
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-white);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* --- NAV --- */
+        .manifesto-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            background: rgba(11, 12, 13, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-back {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--text-grey);
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-back:hover {
+            color: var(--text-white);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link-item {
+            font-size: 13px;
+            color: var(--text-grey);
+            text-decoration: none;
+            transition: color 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-link-item:hover {
+            color: var(--text-white);
+        }
+
+        /* --- GRID BG --- */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    rgba(255, 255, 255, 0.015) 0px,
+                    rgba(255, 255, 255, 0.015) 1px,
+                    transparent 1px,
+                    transparent 80px),
+                repeating-linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.015) 0px,
+                    rgba(255, 255, 255, 0.015) 1px,
+                    transparent 1px,
+                    transparent 80px);
+            pointer-events: none;
+        }
+
+        /* --- PROGRESS BAR --- */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--accent);
+            z-index: 200;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* --- STATEMENT SECTIONS --- */
+        .statement-section {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 48px;
+            text-align: center;
+        }
+
+        .statement-section:first-of-type {
+            padding-top: 160px;
+        }
+
+        .statement-text {
+            font-family: var(--font-display);
+            font-weight: 500;
+            line-height: 1.1;
+            max-width: 1000px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .statement-large {
+            font-size: clamp(40px, 7vw, 96px);
+            letter-spacing: -0.03em;
+        }
+
+        .statement-medium {
+            font-size: clamp(28px, 4.5vw, 64px);
+            letter-spacing: -0.02em;
+        }
+
+        .statement-small {
+            font-size: clamp(20px, 3vw, 42px);
+            letter-spacing: -0.01em;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .statement-accent {
+            color: var(--accent);
+        }
+
+        .statement-dim {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* --- SUPPORTING TEXT --- */
+        .statement-support {
+            font-family: var(--font-body);
+            font-size: clamp(14px, 1.5vw, 18px);
+            color: var(--text-grey);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* --- DIVIDERS --- */
+        .divider {
+            width: 1px;
+            height: 120px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+            opacity: 0.3;
+        }
+
+        .divider-horizontal {
+            width: 200px;
+            height: 1px;
+            margin: 0 auto;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+
+        /* --- SECTION COUNTER --- */
+        .section-counter {
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 48px;
+        }
+
+        .section-counter .counter-num {
+            color: var(--accent);
+            opacity: 0.6;
+        }
+
+        /* --- FINAL CTA --- */
+        .manifesto-cta {
+            position: relative;
+            z-index: 1;
+            padding: 160px 48px;
+            text-align: center;
+        }
+
+        .cta-headline {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 600;
+            margin-bottom: 24px;
+            background: linear-gradient(120deg, #FFFFFF 0%, #B0B0B0 50%, #FFFFFF 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-sub {
+            font-size: 16px;
+            color: var(--text-grey);
+            margin-bottom: 48px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #FFFFFF;
+            color: #000;
+            padding: 16px 36px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            font-family: var(--font-body);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+            transform: scale(1.02);
+        }
+
+        .btn-ghost {
+            color: #FFF;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font-body);
+            padding: 16px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-ghost:hover {
+            border-color: #FFF;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- FOOTER --- */
+        .manifesto-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 48px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-text a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .manifesto-nav {
+                padding: 16px 20px;
+            }
+
+            .nav-links {
+                gap: 16px;
+            }
+
+            .nav-link-item {
+                font-size: 12px;
+            }
+
+            .statement-section {
+                padding: 80px 24px;
+                min-height: 80vh;
+            }
+
+            .statement-support {
+                font-size: 14px;
+                margin-top: 24px;
+            }
+
+            .divider {
+                height: 80px;
+            }
+
+            .manifesto-cta {
+                padding: 80px 24px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .manifesto-nav {
+                padding: 12px 16px;
+            }
+
+            .nav-logo {
+                font-size: 15px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+
+    <!-- Nav -->
+    <nav class="manifesto-nav">
+        <a href="index.html" class="nav-logo">JARVIS</a>
+        <div class="nav-links">
+            <a href="docs.html" class="nav-link-item">Docs</a>
+            <a href="index.html" class="nav-link-item">&larr; Back</a>
+        </div>
+    </nav>
+
+    <!-- STATEMENT 1: Opening -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">01</span> / 09</div>
+        <h1 class="statement-text statement-large">everybody deserves<br>access to AI.</h1>
+        <p class="statement-support">not the watered-down version. not the one behind a paywall. not the one that forgets you exist between sessions. the real thing — intelligent, persistent, yours.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 2: Why Solana -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">02</span> / 09</div>
+        <p class="statement-text statement-medium">we started with solana because the hardest problems prove the strongest systems.</p>
+        <p class="statement-support">autonomous trading in the most volatile markets on earth. 24/7 real-time decisions. no human in the loop. if a system can survive this — it can survive anything.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 3: The Proof -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">03</span> / 09</div>
+        <p class="statement-text statement-medium">if we can autonomously trade crypto,<br><span class="statement-accent">we can do it anywhere.</span></p>
+        <p class="statement-support">solana was the proving ground. productivity, communication, smart homes, health — those are the destinations. the trading engine is just how we earned the right to build them.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 4: The Vision -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">04</span> / 09</div>
+        <p class="statement-text statement-large">we're building the<br><span class="statement-accent">ultimate context engine.</span></p>
+        <p class="statement-support">not a chatbot. not a trading bot. an intelligence layer that understands you — your habits, your risk tolerance, your goals, your patterns — and gets better every day without you asking it to.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 5: What It Really Is -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">05</span> / 09</div>
+        <p class="statement-text statement-small">it's not a solana tool. it's not confined to one platform.<br>it's an evolutionary intelligence that upgrades itself.</p>
+        <p class="statement-support">jarvis learns continuously. it indexes everything it discovers. it reflects on what worked and what didn't. it doesn't lose context between sessions — it compounds it. 100+ semantic learnings and growing. every session makes it sharper.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 6: Model Agnostic -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">06</span> / 09</div>
+        <p class="statement-text statement-large">model-agnostic.<br>always learning.<br><span class="statement-dim">never confined.</span></p>
+        <p class="statement-support">today it runs on claude, grok, gpt-4, and local llama models. tomorrow it'll run on whatever's best. models go obsolete — context doesn't. your AI should never be locked to a single provider.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 7: The Architecture Vision -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">07</span> / 09</div>
+        <p class="statement-text statement-medium">the future is a set of boot documents<br>living across clouds,<br>with an AI mesh that jumps<br>model to model.</p>
+        <p class="statement-support">your digital DNA — backed up everywhere, portable, sovereign. not one company's cloud. not one model's context window. a distributed intelligence that belongs to you, running on whatever substrate is fastest and cheapest at any given moment.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 8: The Closing Statement -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">08</span> / 09</div>
+        <p class="statement-text statement-large"><span class="statement-accent">open source.</span><br>tokenized.<br>ungovernable.</p>
+        <p class="statement-support">we don't build walled gardens. we build tools that make walled gardens irrelevant. every line of code is public. every decision is auditable. every user is an owner.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- STATEMENT 9: The Callback -->
+    <section class="statement-section">
+        <div class="section-counter"><span class="counter-num">09</span> / 09</div>
+        <p class="statement-text statement-medium">always open source —<br>no black boxes —<br><span class="statement-accent">freedom through software.</span></p>
+        <p class="statement-support">this is what we believe. this is what we build. this is what we ship — every day, in the open, for anyone who wants to use it.</p>
+    </section>
+
+    <!-- CTA -->
+    <div class="divider-horizontal" style="margin: 40px auto;"></div>
+
+    <section class="manifesto-cta">
+        <h2 class="cta-headline">system ready.</h2>
+        <p class="cta-sub">the operating system for your life is waiting.</p>
+        <div class="cta-buttons">
+            <a href="https://kr8tiv.web.app/" class="btn-primary" target="_blank">Launch Pre-Alpha</a>
+            <a href="docs.html" class="btn-ghost">Read the Docs</a>
+            <a href="https://github.com/kr8tiv-io/Jarvis" class="btn-ghost" target="_blank">View GitHub</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="manifesto-footer">
+        <p class="footer-text">
+            A product of <a href="https://kr8tiv.ai" target="_blank">kr8tiv AI</a> · Built on Solana · Open Source
+        </p>
+    </footer>
+
+    <script>
+        // Wait for GSAP to load
+        window.addEventListener('load', function() {
+            // Progress bar
+            window.addEventListener('scroll', function() {
+                var scrollTop = window.scrollY;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var progress = (scrollTop / docHeight) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            });
+
+            // GSAP animations
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                // Animate each statement
+                document.querySelectorAll('.statement-text').forEach(function(el) {
+                    gsap.to(el, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 80%',
+                            end: 'top 40%',
+                            toggleActions: 'play none none reverse',
+                        }
+                    });
+                });
+
+                // Animate supporting text (slightly delayed)
+                document.querySelectorAll('.statement-support').forEach(function(el) {
+                    gsap.to(el, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        delay: 0.3,
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 85%',
+                            end: 'top 50%',
+                            toggleActions: 'play none none reverse',
+                        }
+                    });
+                });
+
+                // Animate dividers
+                document.querySelectorAll('.divider').forEach(function(el) {
+                    gsap.from(el, {
+                        scaleY: 0,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none',
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

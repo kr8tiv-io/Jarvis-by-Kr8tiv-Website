@@ -92,18 +92,14 @@
             .viewport-layer {
                 position: absolute;
                 height: var(--hero-height);
-                /* Hard-clip the video layer to prevent GPU compositor bleed */
-                clip: rect(0, auto, var(--hero-height), 0);
-                clip-path: inset(0 0 0 0);
-                -webkit-clip-path: inset(0 0 0 0);
                 overflow: hidden;
-                contain: strict;
             }
 
-            /* Class added by JS when hero scrolls out of view */
+            /* Fade out (not visibility:hidden) when hero scrolls away */
             .viewport-layer.video-hidden {
-                visibility: hidden !important;
+                opacity: 0;
                 pointer-events: none;
+                transition: opacity 0.3s ease;
             }
 
             /* Ensure all sections are opaque on mobile to prevent video bleed */
@@ -2542,7 +2538,6 @@
             .card-video-layer,
             .final-video-bg {
                 overflow: hidden;
-                contain: strict;
             }
 
             .section-universe {
@@ -5148,6 +5143,7 @@
             <div class="nav-center">
                 <a href="#tradingCore" class="nav-link">Capabilities</a>
                 <a href="#sectionPrivacy" class="nav-link">Intelligence</a>
+                <a href="docs.html" class="nav-link">Docs</a>
                 <a href="https://kr8tiv.ai" class="nav-link" target="_blank">Enterprise</a>
                 <a href="https://kr8tiv.web.app/" class="nav-link nav-sniper" target="_blank">Try Sniper <span class="pre-alpha-pill">PRE-ALPHA</span></a>
             </div>
@@ -5259,7 +5255,7 @@
                     <!-- Left Card (Bots) -->
                     <div class="glass-card" id="cardLeft">
                         <div class="card-video-layer">
-                            <video autoplay loop muted playsinline preload="none" class="lazy-video" data-src-mobile="section2-1_mobile.mp4" data-src-webm="section2-1.webm" data-src-mp4="section2-1_optimized.mp4">
+                            <video autoplay loop muted playsinline preload="metadata" class="lazy-video">
                                 <source src="section2-1_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                                 <source src="section2-1.webm" type="video/webm">
                                 <source src="section2-1_optimized.mp4" type="video/mp4">
@@ -5278,7 +5274,7 @@
                     <!-- Right Card (Drowning) -->
                     <div class="glass-card" id="cardRight">
                         <div class="card-video-layer">
-                            <video autoplay loop muted playsinline preload="none" class="lazy-video" data-src-mobile="section2-2_mobile.mp4" data-src-webm="section2-2.webm" data-src-mp4="section2-2_optimized.mp4">
+                            <video autoplay loop muted playsinline preload="metadata" class="lazy-video">
                                 <source src="section2-2_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                                 <source src="section2-2.webm" type="video/webm">
                                 <source src="section2-2_optimized.mp4" type="video/mp4">
@@ -5322,6 +5318,7 @@
                             class="letter">A</span><span class="letter">R</span><span class="letter">E</span></span>
                 </div>
             </div>
+            <a href="manifesto.html" style="display:block;text-align:center;padding:24px 0 0;font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">read the full manifesto &rarr;</a>
         </section>
 
         <!-- SECTION 3: SOLANA VELOCITY ENGINE -->
@@ -6417,7 +6414,7 @@ jarvis start --daemon`
         <section class="section-final-cta" id="sectionFinal">
             <!-- VIDEO BACKGROUND -->
             <div class="final-video-bg">
-                <video autoplay loop muted playsinline preload="none" class="lazy-video" data-src-mobile="jarvis2_mobile.mp4" data-src-webm="jarvis2_optimized.webm" data-src-mp4="jarvis2_optimized.mp4">
+                <video autoplay loop muted playsinline preload="metadata" class="lazy-video">
                     <source src="jarvis2_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                     <source src="jarvis2_optimized.webm" type="video/webm">
                     <source src="jarvis2_optimized.mp4" type="video/mp4">
@@ -6478,8 +6475,8 @@ jarvis start --daemon`
                 <footer class="site-footer" id="mainFooter">
                     <div class="footer-logo">JARVIS</div>
                     <div class="footer-links">
-                        <a href="#manifesto" class="footer-link">Manifesto</a>
-                        <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="footer-link" target="_blank">Documentation</a>
+                        <a href="manifesto.html" class="footer-link">Manifesto</a>
+                        <a href="docs.html" class="footer-link">Documentation</a>
                         <a href="#sectionToken" class="footer-link">Tokenomics</a>
                         <a href="https://kr8tiv.web.app/" class="footer-link" target="_blank">Trading App</a>
                     </div>
@@ -8739,14 +8736,11 @@ jarvis start --daemon`
             if ('IntersectionObserver' in window) {
                 var videoObserver = new IntersectionObserver(function(entries) {
                     entries.forEach(function(entry) {
+                        var video = entry.target;
                         if (entry.isIntersecting) {
-                            var video = entry.target;
-                            // Video sources are already in HTML, just trigger load
-                            if (video.paused) {
-                                video.load();
-                                video.play().catch(function() {});
-                            }
-                            videoObserver.unobserve(video);
+                            video.play().catch(function() {});
+                        } else {
+                            video.pause();
                         }
                     });
                 }, { rootMargin: '200px' });
@@ -8790,7 +8784,7 @@ jarvis start --daemon`
                                 viewportLayer.classList.add('video-hidden');
                             }
                         });
-                    }, { threshold: 0, rootMargin: '0px' });
+                    }, { threshold: 0, rootMargin: '50px' });
                     heroObserver.observe(heroSection);
                 }
             }

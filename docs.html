@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation — Jarvis LifeOS by kr8tiv AI</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Jarvis LifeOS documentation — architecture, capabilities, multi-agent system, trust ladder, economic model. A persistent personal context engine by kr8tiv AI.">
+    <meta name="author" content="kr8tiv AI">
+    <link rel="canonical" href="https://jarvislife.io/docs.html">
+    <link rel="icon" type="image/png" href="tab.png">
+
+    <!-- OG -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jarvislife.io/docs.html">
+    <meta property="og:title" content="Documentation — Jarvis LifeOS">
+    <meta property="og:description" content="the complete technical documentation for jarvis — a persistent personal context engine.">
+    <meta property="og:image" content="https://jarvislife.io/social-share.png">
+    <meta property="og:site_name" content="Jarvis LifeOS">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@kr8tivai">
+    <meta name="twitter:title" content="Documentation — Jarvis LifeOS">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0B0C0D;
+            --bg-card: #111214;
+            --bg-code: #0D0E10;
+            --text-white: #FFFFFF;
+            --text-grey: #a0a0a0;
+            --text-body: rgba(255, 255, 255, 0.75);
+            --accent: #39FF14;
+            --accent-dim: rgba(57, 255, 20, 0.15);
+            --border: rgba(255, 255, 255, 0.06);
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-body);
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* --- NAV --- */
+        .docs-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 48px;
+            background: rgba(11, 12, 13, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-title {
+            font-size: 13px;
+            color: var(--text-grey);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-link-item {
+            font-size: 13px;
+            color: var(--text-grey);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item:hover { color: var(--text-white); }
+
+        /* --- LAYOUT --- */
+        .docs-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        /* --- TOC SIDEBAR --- */
+        .toc-sidebar {
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            padding: 48px 24px 48px 48px;
+            border-right: 1px solid var(--border);
+        }
+
+        .toc-sidebar::-webkit-scrollbar { width: 2px; }
+        .toc-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+        .toc-label {
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            display: block;
+            font-size: 13px;
+            color: var(--text-grey);
+            text-decoration: none;
+            padding: 6px 0;
+            padding-left: 12px;
+            border-left: 1px solid transparent;
+            transition: all 0.2s;
+            line-height: 1.4;
+        }
+
+        .toc-link:hover {
+            color: var(--text-white);
+        }
+
+        .toc-link.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .docs-content {
+            padding: 64px 80px 120px 80px;
+            max-width: 860px;
+        }
+
+        /* --- HERO --- */
+        .docs-hero {
+            margin-bottom: 80px;
+            padding-bottom: 64px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .docs-hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(120deg, #FFFFFF 0%, #B0B0B0 50%, #FFFFFF 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .docs-hero-sub {
+            font-size: 18px;
+            color: var(--text-grey);
+            max-width: 560px;
+            line-height: 1.6;
+        }
+
+        .docs-hero-meta {
+            margin-top: 24px;
+            display: flex;
+            gap: 24px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .docs-hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- SECTIONS --- */
+        .doc-section {
+            margin-bottom: 80px;
+            scroll-margin-top: 100px;
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-number {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent);
+            opacity: 0.6;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 3.5vw, 40px);
+            font-weight: 600;
+            color: var(--text-white);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .section-rule {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, var(--border), transparent);
+            margin-top: 64px;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        .doc-section p {
+            margin-bottom: 20px;
+        }
+
+        .doc-section h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-white);
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+
+        /* --- BLOCKQUOTE / CALLOUT --- */
+        .callout {
+            border-left: 2px solid var(--accent);
+            padding: 20px 24px;
+            margin: 32px 0;
+            background: var(--accent-dim);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        /* --- FEATURE GRID --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .feature-card-title {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-white);
+            margin-bottom: 8px;
+        }
+
+        .feature-card-text {
+            font-size: 13px;
+            color: var(--text-grey);
+            line-height: 1.6;
+        }
+
+        /* --- CODE BLOCKS --- */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            overflow-x: auto;
+        }
+
+        .code-block .accent { color: var(--accent); }
+        .code-block .dim { color: rgba(255, 255, 255, 0.35); }
+
+        /* --- DATA TABLE --- */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-grey);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-body);
+        }
+
+        .data-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-green {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .badge-grey {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-grey);
+        }
+
+        /* --- AGENT CARDS --- */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .agent-name {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 4px;
+        }
+
+        .agent-role {
+            font-size: 12px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .agent-desc {
+            font-size: 13px;
+            color: var(--text-grey);
+            line-height: 1.5;
+        }
+
+        /* --- TRUST LADDER --- */
+        .ladder {
+            margin: 32px 0;
+        }
+
+        .ladder-step {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 16px;
+            align-items: start;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ladder-level {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            text-align: center;
+            padding-top: 2px;
+        }
+
+        .ladder-title {
+            font-weight: 600;
+            color: var(--text-white);
+            font-size: 15px;
+        }
+
+        .ladder-desc {
+            font-size: 13px;
+            color: var(--text-grey);
+            margin-top: 4px;
+        }
+
+        /* --- PIPELINE --- */
+        .pipeline {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 32px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pipeline-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 24px;
+            text-align: center;
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-white);
+        }
+
+        .pipeline-arrow {
+            color: var(--accent);
+            font-size: 18px;
+            padding: 0 8px;
+            opacity: 0.5;
+        }
+
+        /* --- FOOTER --- */
+        .docs-footer {
+            text-align: center;
+            padding: 48px;
+            border-top: 1px solid var(--border);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .docs-footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .docs-footer-links a {
+            font-size: 13px;
+            color: var(--text-grey);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .docs-footer-links a:hover { color: var(--text-white); }
+
+        .docs-footer-copy {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .docs-footer-copy a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* --- MOBILE TOC --- */
+        .toc-mobile-toggle {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 150;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-white);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .docs-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .toc-sidebar {
+                display: none;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 90;
+                background: rgba(11, 12, 13, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 32px;
+                border-right: none;
+                height: auto;
+            }
+
+            .toc-sidebar.open {
+                display: block;
+            }
+
+            .toc-mobile-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .docs-content {
+                padding: 48px 32px 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .docs-nav {
+                padding: 16px 20px;
+            }
+
+            .nav-title { display: none; }
+            .nav-divider { display: none; }
+
+            .docs-content {
+                padding: 32px 20px 80px;
+            }
+
+            .pipeline {
+                flex-direction: column;
+            }
+
+            .pipeline-arrow {
+                transform: rotate(90deg);
+                padding: 4px 0;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .agent-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Nav -->
+    <nav class="docs-nav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">JARVIS</a>
+            <div class="nav-divider"></div>
+            <span class="nav-title">Documentation</span>
+        </div>
+        <div class="nav-links">
+            <a href="manifesto.html" class="nav-link-item">Manifesto</a>
+            <a href="https://github.com/kr8tiv-io/Jarvis" class="nav-link-item" target="_blank">GitHub</a>
+            <a href="index.html" class="nav-link-item">&larr; Home</a>
+        </div>
+    </nav>
+
+    <!-- Mobile TOC Toggle -->
+    <button class="toc-mobile-toggle" id="tocToggle" onclick="document.querySelector('.toc-sidebar').classList.toggle('open'); this.textContent = document.querySelector('.toc-sidebar').classList.contains('open') ? '✕' : '☰'">☰</button>
+
+    <div class="docs-layout">
+        <!-- TOC Sidebar -->
+        <aside class="toc-sidebar" id="tocSidebar">
+            <div class="toc-label">Contents</div>
+            <a href="#what-is-jarvis" class="toc-link">What is Jarvis</a>
+            <a href="#the-vision" class="toc-link">The Vision</a>
+            <a href="#architecture" class="toc-link">Architecture</a>
+            <a href="#why-solana" class="toc-link">Why Solana First</a>
+            <a href="#capabilities" class="toc-link">Capabilities</a>
+            <a href="#clawdbots" class="toc-link">The ClawdBots</a>
+            <a href="#trust-ladder" class="toc-link">Trust Ladder</a>
+            <a href="#economic-model" class="toc-link">Economic Model</a>
+            <a href="#security" class="toc-link">Security</a>
+            <a href="#platform" class="toc-link">Platform & Roadmap</a>
+            <a href="#portable-brain" class="toc-link">The Portable Brain</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <!-- Hero -->
+            <div class="docs-hero">
+                <h1 class="docs-hero-title">the documentation.</h1>
+                <p class="docs-hero-sub">everything jarvis is, everything it does, and everything it's becoming. a persistent personal context engine — built in the open.</p>
+                <div class="docs-hero-meta">
+                    <span>v4.7+ · Multi-Agent</span>
+                    <span>81+ Strategies</span>
+                    <span>Open Source</span>
+                </div>
+            </div>
+
+            <!-- §1: WHAT IS JARVIS -->
+            <section class="doc-section" id="what-is-jarvis">
+                <div class="section-header">
+                    <div class="section-number">01</div>
+                    <h2 class="section-title">what is jarvis</h2>
+                </div>
+
+                <p>jarvis represents a fundamentally different approach to AI assistance. rather than isolated tools requiring constant user orchestration, it functions as a mesh of intelligent layers working together to run, optimize, and upgrade your life.</p>
+
+                <div class="callout">instead of you adapting to software, the software adapts to you.</div>
+
+                <p>think of iron man's JARVIS — an assistant that operates quietly in the background, understanding preferences across every device and domain, without demanding attention or constant reconfiguration. that's the target.</p>
+
+                <p>it's not a chatbot. it's not a wrapper around an API. it's a persistent operating layer that sits beneath your applications and learns from everything it observes — your routines, your decisions, your mistakes, your wins.</p>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §2: THE VISION -->
+            <section class="doc-section" id="the-vision">
+                <div class="section-header">
+                    <div class="section-number">02</div>
+                    <h2 class="section-title">the vision</h2>
+                </div>
+
+                <p>jarvis isn't just a trading bot. it's the foundation for something much bigger.</p>
+
+                <p>we're building the ultimate context engine — a system that doesn't just respond to commands, it understands you. your habits, your risk tolerance, your goals, your attention patterns. it learns continuously and upgrades itself without you asking it to.</p>
+
+                <div class="callout">models go obsolete — context doesn't.</div>
+
+                <p>it's completely model-agnostic. today it runs on claude, grok, gpt-4, and local llama models. tomorrow it'll run on whatever's best. the intelligence layer routes to the right model for the right task — GPT-4 for complex reasoning, claude for code generation, grok for sentiment analysis, local models for privacy-critical operations.</p>
+
+                <p>the future isn't one AI locked in one app. it's a set of boot documents — your digital DNA — living across clouds, backed up everywhere, with an AI mesh that jumps between models and providers seamlessly. sovereign intelligence that belongs to you.</p>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §3: ARCHITECTURE -->
+            <section class="doc-section" id="architecture">
+                <div class="section-header">
+                    <div class="section-number">03</div>
+                    <h2 class="section-title">architecture</h2>
+                </div>
+
+                <p>the system operates on a five-stage pipeline that creates a unified operational layer beneath all applications and platforms:</p>
+
+                <div class="pipeline">
+                    <div class="pipeline-step">Context</div>
+                    <span class="pipeline-arrow">&rarr;</span>
+                    <div class="pipeline-step">Intelligence</div>
+                    <span class="pipeline-arrow">&rarr;</span>
+                    <div class="pipeline-step">Action</div>
+                    <span class="pipeline-arrow">&rarr;</span>
+                    <div class="pipeline-step">Feedback</div>
+                    <span class="pipeline-arrow">&rarr;</span>
+                    <div class="pipeline-step">Memory</div>
+                </div>
+
+                <p>the innovation lies in persistent context tracking across every dimension of your digital life:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-title">Preferences & Routines</div>
+                        <div class="feature-card-text">learns your patterns, adapts to your schedule, anticipates your needs.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Financial Posture</div>
+                        <div class="feature-card-text">risk tolerance, position sizing, loss thresholds — calibrated to you.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Goals & Attention</div>
+                        <div class="feature-card-text">what matters to you, what you're focused on, what can wait.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Environmental Awareness</div>
+                        <div class="feature-card-text">market conditions, time of day, device context, energy level.</div>
+                    </div>
+                </div>
+
+                <h3>the self-improving core</h3>
+                <p>100+ indexed learnings within semantic memory. 18 model context protocols. reflection cycles that enable continuous improvement without knowledge loss between sessions. every interaction makes the system more aligned with your intentions.</p>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §4: WHY SOLANA FIRST -->
+            <section class="doc-section" id="why-solana">
+                <div class="section-header">
+                    <div class="section-number">04</div>
+                    <h2 class="section-title">why solana first</h2>
+                </div>
+
+                <p>jarvis launched within cryptocurrency — specifically solana — not as a limiting choice but as an intentional proving ground.</p>
+
+                <div class="callout">crypto environments offer transparent, real-time, measurable outcomes — perfect for validating autonomous systems before expanding into everything else.</div>
+
+                <p>the trading engine operates 24/7 with immediate feedback mechanisms that expose flawed logic in minutes, not months. a bad strategy loses real money instantly. a good one compounds. there's no faking it.</p>
+
+                <p>this creates a training ground where autonomous systems learn under genuine pressure. if jarvis can make profitable decisions in the most volatile markets on earth without human intervention, it can handle your calendar, your email, your home automation.</p>
+
+                <p>solana specifically because of sub-second finality, negligible transaction costs, and the deepest on-chain data availability of any L1. the infrastructure matches the ambition.</p>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §5: CAPABILITIES -->
+            <section class="doc-section" id="capabilities">
+                <div class="section-header">
+                    <div class="section-number">05</div>
+                    <h2 class="section-title">capabilities</h2>
+                </div>
+
+                <h3>autonomous trading</h3>
+                <p>81+ strategies running autonomously with sophisticated risk management including position sizing, stop losses, take profits, and circuit breakers. jupiter DEX integration for direct on-chain execution.</p>
+
+                <h3>multi-platform intelligence</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-title">X / Twitter</div>
+                        <div class="feature-card-text">autonomous content generation, market commentary, sentiment-driven posts via @Jarvis_lifeos.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Telegram</div>
+                        <div class="feature-card-text">full admin interface, trade execution, position management, system control.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Web Dashboard</div>
+                        <div class="feature-card-text">real-time portfolio monitoring, P&L tracking, strategy configuration.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Voice Commands</div>
+                        <div class="feature-card-text">desktop voice integration for hands-free system interaction.</div>
+                    </div>
+                </div>
+
+                <h3>bags.fm intelligence</h3>
+                <p>real-time monitoring of token graduations with AI-powered investment analysis. scoring across five dimensions — bonding curve (25%), creator profile (20%), social signals (15%), market conditions (25%), and holder distribution (15%). quality tiers from exceptional (80+) to poor (&lt;35).</p>
+
+                <h3>data integrations</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CoinGecko</td><td>token metadata, market capitalization</td></tr>
+                        <tr><td>DeFiLlama</td><td>protocol analysis, chain analytics</td></tr>
+                        <tr><td>DexScreener</td><td>primary price source, liquidity data</td></tr>
+                        <tr><td>Jupiter</td><td>DEX aggregation, swap execution</td></tr>
+                        <tr><td>Helius</td><td>solana RPC, transaction parsing</td></tr>
+                        <tr><td>Grok AI</td><td>sentiment analysis, market scoring</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §6: THE CLAWDBOTS -->
+            <section class="doc-section" id="clawdbots">
+                <div class="section-header">
+                    <div class="section-number">06</div>
+                    <h2 class="section-title">the clawdbots</h2>
+                </div>
+
+                <p>jarvis v4.7 introduced a distributed multi-agent architecture — five specialized AI agents collaborating as a mesh. each has a distinct personality, role, and set of capabilities. together they're greater than the sum of their parts.</p>
+
+                <div class="agent-grid">
+                    <div class="agent-card">
+                        <div class="agent-name">Arsenal</div>
+                        <div class="agent-role">Safety & Comms</div>
+                        <div class="agent-desc">COO safety filter. reviews all public communications for brand alignment and risk.</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-name">ClawdJarvis</div>
+                        <div class="agent-role">Coordination</div>
+                        <div class="agent-desc">central orchestrator. manages execution flow and inter-agent communication.</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-name">ClawdFriday</div>
+                        <div class="agent-role">Operations</div>
+                        <div class="agent-desc">maintenance and ops. keeps systems running, handles deployments and health checks.</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-name">ClawdYoda</div>
+                        <div class="agent-role">Strategy</div>
+                        <div class="agent-desc">risk assessment and strategic thinking. the wise one who says "patience" when others say "ape".</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-name">ClawdSquishy</div>
+                        <div class="agent-role">Monitoring</div>
+                        <div class="agent-desc">anomaly detection and surveillance. watches everything, alerts when something's off.</div>
+                    </div>
+                </div>
+
+                <p>all agents share 50+ modules handling coordination, self-healing, memory management, and observability. peer-to-peer monitoring means agents automatically detect and recover from failures without human intervention.</p>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §7: TRUST LADDER -->
+            <section class="doc-section" id="trust-ladder">
+                <div class="section-header">
+                    <div class="section-number">07</div>
+                    <h2 class="section-title">trust ladder</h2>
+                </div>
+
+                <p>autonomy is earned, not assumed. jarvis progresses through permission levels based on demonstrated performance. advancement requires successful action completion without major errors.</p>
+
+                <div class="ladder">
+                    <div class="ladder-step">
+                        <div class="ladder-level">L0</div>
+                        <div>
+                            <div class="ladder-title">Supervised</div>
+                            <div class="ladder-desc">zero autonomy. every action requires explicit human approval.</div>
+                        </div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="ladder-level">L1</div>
+                        <div>
+                            <div class="ladder-title">Assisted</div>
+                            <div class="ladder-desc">suggestions only. the system recommends, you decide.</div>
+                        </div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="ladder-level">L2</div>
+                        <div>
+                            <div class="ladder-title">Monitored</div>
+                            <div class="ladder-desc">execution with confirmation. acts on your behalf but asks first.</div>
+                        </div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="ladder-level">L3</div>
+                        <div>
+                            <div class="ladder-title">Autonomous</div>
+                            <div class="ladder-desc">independent execution within defined guardrails. reports after the fact.</div>
+                        </div>
+                    </div>
+                    <div class="ladder-step">
+                        <div class="ladder-level">L4</div>
+                        <div>
+                            <div class="ladder-title">Trusted</div>
+                            <div class="ladder-desc">proactive recommendations. anticipates needs and acts before you ask.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout">accountability through measurable performance. no shortcuts. trust is a function of track record, not configuration.</div>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §8: ECONOMIC MODEL -->
+            <section class="doc-section" id="economic-model">
+                <div class="section-header">
+                    <div class="section-number">08</div>
+                    <h2 class="section-title">economic model</h2>
+                </div>
+
+                <p>the system operates on open-source principles — free to use, self-upgrading, migrating toward smaller, faster, more powerful models. no subscriptions. no lock-in.</p>
+
+                <h3>$KR8TIV token</h3>
+                <p>the currency of the kr8tiv AI ecosystem. fair launch on bags.fm. revenue distribution aligns incentives toward user benefit rather than rent-seeking:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card" style="border-color: rgba(57, 255, 20, 0.2);">
+                        <div class="feature-card-title" style="color: var(--accent); font-size: 28px;">75%</div>
+                        <div class="feature-card-text">to $KR8TIV token holders. you own the upside.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title" style="font-size: 28px;">20%</div>
+                        <div class="feature-card-text">to ongoing development. keeping the system sharp.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title" style="font-size: 28px;">5%</div>
+                        <div class="feature-card-text">to charitable causes. building something worth building.</div>
+                    </div>
+                </div>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §9: SECURITY -->
+            <section class="doc-section" id="security">
+                <div class="section-header">
+                    <div class="section-number">09</div>
+                    <h2 class="section-title">security</h2>
+                </div>
+
+                <p>open source doesn't mean open target. the security architecture is layered and defense-in-depth:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-title">Anti-Scam Protection</div>
+                        <div class="feature-card-text">regex-based pattern detection with automatic restrictions and message deletion. zero tolerance for scam vectors.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Key Management</div>
+                        <div class="feature-card-text">AES-256 encryption at rest. keys never leave the local environment. no cloud key storage.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Emergency Shutdown</div>
+                        <div class="feature-card-text">graceful termination systems at every level. kill switches for trading, posting, and all autonomous operations.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Access Control</div>
+                        <div class="feature-card-text">role-based access restricts treasury operations to authorized administrators only.</div>
+                    </div>
+                </div>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §10: PLATFORM & ROADMAP -->
+            <section class="doc-section" id="platform">
+                <div class="section-header">
+                    <div class="section-number">10</div>
+                    <h2 class="section-title">platform & roadmap</h2>
+                </div>
+
+                <h3>current platforms</h3>
+                <p>operational on macOS, windows, and linux with 1200+ passing tests. containerized docker deployment with docker-compose orchestration and systemd service integration.</p>
+
+                <h3>what's next</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Timeline</th>
+                            <th>Milestone</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Now</td>
+                            <td>autonomous solana trading, multi-agent mesh, web terminal</td>
+                            <td><span class="badge badge-green">LIVE</span></td>
+                        </tr>
+                        <tr>
+                            <td>Q2 2026</td>
+                            <td>iOS & Android apps, Discord integration, browser extension</td>
+                            <td><span class="badge badge-grey">PLANNED</span></td>
+                        </tr>
+                        <tr>
+                            <td>Q3 2026</td>
+                            <td>smart home connectivity, productivity integrations</td>
+                            <td><span class="badge badge-grey">PLANNED</span></td>
+                        </tr>
+                        <tr>
+                            <td>2027+</td>
+                            <td>vehicle integration, AR/VR interfaces, cross-domain autonomy</td>
+                            <td><span class="badge badge-grey">RESEARCH</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-rule"></div>
+            </section>
+
+            <!-- §11: THE PORTABLE BRAIN -->
+            <section class="doc-section" id="portable-brain">
+                <div class="section-header">
+                    <div class="section-number">11</div>
+                    <h2 class="section-title">the portable brain</h2>
+                </div>
+
+                <p>your AI's knowledge is yours. fully exportable, fully importable, fully portable. the portable brain feature enables moving your entire AI context across devices and environments.</p>
+
+                <p>what travels with you:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-title">Trading Preferences</div>
+                        <div class="feature-card-text">risk tolerance, strategy configs, position sizing rules, stop-loss patterns.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Learned Patterns</div>
+                        <div class="feature-card-text">100+ semantic learnings, market observations, what worked and what didn't.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Conversation History</div>
+                        <div class="feature-card-text">context from every interaction, preferences discovered through dialogue.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-title">Custom Automations</div>
+                        <div class="feature-card-text">your scripts, your workflows, your agents — configured exactly how you want them.</div>
+                    </div>
+                </div>
+
+                <div class="callout">your intelligence, your data, your rules. portable across every device you own. no vendor lock-in, ever.</div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="docs-footer">
+        <div class="docs-footer-links">
+            <a href="index.html">Home</a>
+            <a href="manifesto.html">Manifesto</a>
+            <a href="https://github.com/kr8tiv-io/Jarvis" target="_blank">GitHub</a>
+            <a href="https://kr8tiv.web.app/" target="_blank">Trading App</a>
+            <a href="https://x.com/kr8tivai" target="_blank">@kr8tivai</a>
+        </div>
+        <p class="docs-footer-copy">
+            A product of <a href="https://kr8tiv.ai" target="_blank">kr8tiv AI</a> · Built on Solana · Open Source
+        </p>
+    </footer>
+
+    <script>
+        // TOC active state tracking
+        window.addEventListener('load', function() {
+            var tocLinks = document.querySelectorAll('.toc-link');
+            var sections = [];
+
+            tocLinks.forEach(function(link) {
+                var id = link.getAttribute('href').replace('#', '');
+                var section = document.getElementById(id);
+                if (section) sections.push({ el: section, link: link });
+            });
+
+            function updateActiveToc() {
+                var scrollPos = window.scrollY + 150;
+                var active = null;
+
+                sections.forEach(function(s) {
+                    if (s.el.offsetTop <= scrollPos) {
+                        active = s;
+                    }
+                });
+
+                tocLinks.forEach(function(l) { l.classList.remove('active'); });
+                if (active) active.link.classList.add('active');
+            }
+
+            window.addEventListener('scroll', updateActiveToc);
+            updateActiveToc();
+
+            // Close mobile TOC on link click
+            tocLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    var sidebar = document.getElementById('tocSidebar');
+                    var toggle = document.getElementById('tocToggle');
+                    if (sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                        toggle.textContent = '☰';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
