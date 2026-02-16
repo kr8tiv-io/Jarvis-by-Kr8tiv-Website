@@ -4993,6 +4993,34 @@
                 background-color: #0B0C0D !important;
             }
 
+            /* --- OLD ANDROID COMPOSITING HARDENING --- */
+            /* Force GPU layer promotion on all covering sections.
+               Prevents position:fixed bleed-through on old Android Chrome
+               where the compositor doesn't properly respect z-index stacking. */
+            .section-split,
+            .section-solana,
+            .section-universe,
+            .section-personal,
+            .section-privacy,
+            .section-public,
+            .section-open,
+            .section-token,
+            .section-community,
+            .section-roadmap,
+            .section-final-cta,
+            .manifesto-section {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+
+            /* Hide viewport-layer when JS marks it as out-of-view */
+            .viewport-layer.hero-passed {
+                visibility: hidden !important;
+                pointer-events: none;
+            }
+
             /* --- HERO SECTION FIXES --- */
             .hero-title {
                 font-size: 34px !important;
@@ -8837,6 +8865,63 @@ jarvis start --daemon`
                 });
 
                 console.log('Mobile video optimization applied');
+            }
+        })();
+    </script>
+
+    <!-- MOBILE: Hide fixed video layer once hero scrolls out of view.
+         Prevents position:fixed bleed-through on old Android Chrome
+         where GPU compositing doesn't properly respect z-index stacking. -->
+    <script>
+        (function () {
+            if (window.innerWidth > 768) return;
+
+            var viewportLayer = document.querySelector('.viewport-layer');
+            var heroSection = document.querySelector('.hero-section');
+            if (!viewportLayer || !heroSection) return;
+
+            // Also pause the video when hidden to save battery
+            var mainVideo = document.getElementById('mainVideo');
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            // Hero is visible - show video layer
+                            viewportLayer.classList.remove('hero-passed');
+                            if (mainVideo) mainVideo.play().catch(function () { });
+                        } else {
+                            // Hero is out of view - hide video layer completely
+                            viewportLayer.classList.add('hero-passed');
+                            if (mainVideo) mainVideo.pause();
+                        }
+                    });
+                }, {
+                    threshold: 0,
+                    rootMargin: '100px 0px 0px 0px'
+                });
+
+                observer.observe(heroSection);
+                console.log('Mobile hero video observer active');
+            } else {
+                // Fallback for very old browsers without IntersectionObserver
+                var ticking = false;
+                window.addEventListener('scroll', function () {
+                    if (!ticking) {
+                        window.requestAnimationFrame(function () {
+                            var heroBottom = heroSection.getBoundingClientRect().bottom;
+                            if (heroBottom < -50) {
+                                viewportLayer.classList.add('hero-passed');
+                                if (mainVideo) mainVideo.pause();
+                            } else {
+                                viewportLayer.classList.remove('hero-passed');
+                                if (mainVideo) mainVideo.play().catch(function () { });
+                            }
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
             }
         })();
     </script>
