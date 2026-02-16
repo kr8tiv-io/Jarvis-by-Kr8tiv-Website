@@ -4,32 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis LifeOS - Your Personal AI Operating System</title>
+    <title>Jarvis LifeOS — by kr8tiv AI</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Jarvis is not a chatbot. It's your LifeOS. Runs locally, watches, learns, acts, and evolves 24/7. Built on Solana with autonomous trading strategies. Open source and community driven.">
-    <meta name="keywords" content="Jarvis, LifeOS, AI assistant, Solana, trading bot, personal AI, local AI, open source">
-    <meta name="author" content="Luminous Lab">
+    <meta name="description" content="Jarvis is not a chatbot. It's your LifeOS. Runs locally. Watches, learns, acts, and evolves — 24/7. Autonomous Solana trading + personal AI agent. Built by kr8tiv AI.">
+    <meta name="keywords" content="Jarvis, LifeOS, kr8tiv AI, Solana trading bot, autonomous AI, local AI, open source AI, KR8TIV token">
+    <meta name="author" content="kr8tiv AI">
     <meta name="robots" content="index, follow">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="tab.png">
     <link rel="apple-touch-icon" href="tab.png">
 
+    <!-- Canonical -->
+    <link rel="canonical" href="https://jarvislife.io/">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jarvislife.io/">
-    <meta property="og:title" content="Jarvis LifeOS - Your Personal AI Operating System">
-    <meta property="og:description" content="Jarvis is not a chatbot. It's your LifeOS. Runs locally, watches, learns, acts, and evolves 24/7. Built on Solana. Open source.">
+    <meta property="og:title" content="Jarvis LifeOS — by kr8tiv AI">
+    <meta property="og:description" content="Jarvis is not a chatbot. It's your LifeOS. Autonomous Solana trading + personal AI agent. Open source. Runs locally.">
     <meta property="og:image" content="https://jarvislife.io/social-share.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Jarvis LifeOS">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@kr8tivai">
-    <meta name="twitter:title" content="Jarvis LifeOS - Your Personal AI Operating System">
-    <meta name="twitter:description" content="Jarvis is not a chatbot. It's your LifeOS. Runs locally, watches, learns, acts, and evolves 24/7. Built on Solana. Open source.">
+    <meta name="twitter:title" content="Jarvis LifeOS — by kr8tiv AI">
+    <meta name="twitter:description" content="Not a chatbot. Your LifeOS. Autonomous Solana trading + personal AI. Open source.">
     <meta name="twitter:image" content="https://jarvislife.io/social-share.png">
 
     <!-- Fonts -->
@@ -39,9 +43,9 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap"
         rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 
     <style>
         :root {
@@ -73,6 +77,14 @@
             isolation: isolate;
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
+        }
+
+        /* --- MOBILE VIDEO POP-THROUGH FIX --- */
+        @media (max-width: 768px) {
+            .viewport-layer {
+                position: absolute;
+                height: var(--hero-height);
+            }
         }
 
         /* --- GLOBAL H1 HOVER GLOW --- */
@@ -1375,6 +1387,10 @@
             position: relative;
             z-index: 10;
             width: 100%;
+            will-change: transform;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-overflow-scrolling: auto;
         }
 
         /* Hero Section Content */
@@ -1467,6 +1483,23 @@
             color: #FFF;
             /* PROMPT: White Glow Hover */
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-sniper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pre-alpha-pill {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: #39FF14;
+            color: #0B0C0D;
+            padding: 2px 6px;
+            border-radius: 4px;
+            line-height: 1;
         }
 
         .nav-right {
@@ -4259,6 +4292,24 @@
             color: #FFF;
         }
 
+        .footer-social {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .footer-social-link {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+
+        .footer-social-link:hover {
+            color: #39FF14;
+            text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+        }
+
         .footer-copy {
             font-size: 12px;
             color: rgba(255, 255, 255, 0.5);
@@ -5028,7 +5079,7 @@
         <!-- Video -->
         <div class="video-container" id="videoWrapper">
             <!-- Using local file -->
-            <video autoplay loop muted playsinline id="mainVideo">
+            <video autoplay loop muted playsinline id="mainVideo" preload="metadata">
                 <source src="jarvis3_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                 <source src="jarvis3_optimized.webm" type="video/webm">
                 <source src="jarvis3_optimized.mp4" type="video/mp4">
@@ -5059,7 +5110,8 @@
             <div class="nav-center">
                 <a href="#tradingCore" class="nav-link">Capabilities</a>
                 <a href="#sectionPrivacy" class="nav-link">Intelligence</a>
-                <a href="#tradingCore" class="nav-link">Enterprise</a>
+                <a href="https://kr8tiv.ai" class="nav-link" target="_blank">Enterprise</a>
+                <a href="https://kr8tiv.web.app/" class="nav-link nav-sniper" target="_blank">Try Sniper <span class="pre-alpha-pill">PRE-ALPHA</span></a>
             </div>
 
             <div class="nav-right">
@@ -5081,7 +5133,7 @@
                         </svg>
                     </a>
                     <!-- Telegram -->
-                    <a href="#" class="social-icon" title="Telegram" target="_blank">
+                    <a href="https://t.me/kr8tivaisystems" class="social-icon" title="Telegram" target="_blank">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
@@ -5094,7 +5146,7 @@
                     </a>
                 </div>
 
-                <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="btn-ghost btn-github"><svg
+                <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="btn-ghost btn-github"><svg
                         class="github-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -5111,8 +5163,8 @@
                     the luminous future of personal computing.</p>
 
                 <div class="btn-group">
-                    <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="btn-primary">Install Jarvis</a>
-                    <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="btn-ghost">View Documentation</a>
+                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="btn-primary">Install Jarvis</a>
+                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="btn-ghost">View Documentation</a>
                 </div>
             </div>
         </section>
@@ -5169,7 +5221,7 @@
                     <!-- Left Card (Bots) -->
                     <div class="glass-card" id="cardLeft">
                         <div class="card-video-layer">
-                            <video autoplay loop muted playsinline>
+                            <video autoplay loop muted playsinline preload="none" class="lazy-video" data-src-mobile="section2-1_mobile.mp4" data-src-webm="section2-1.webm" data-src-mp4="section2-1_optimized.mp4">
                                 <source src="section2-1_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                                 <source src="section2-1.webm" type="video/webm">
                                 <source src="section2-1_optimized.mp4" type="video/mp4">
@@ -5188,7 +5240,7 @@
                     <!-- Right Card (Drowning) -->
                     <div class="glass-card" id="cardRight">
                         <div class="card-video-layer">
-                            <video autoplay loop muted playsinline>
+                            <video autoplay loop muted playsinline preload="none" class="lazy-video" data-src-mobile="section2-2_mobile.mp4" data-src-webm="section2-2.webm" data-src-mp4="section2-2_optimized.mp4">
                                 <source src="section2-2_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                                 <source src="section2-2.webm" type="video/webm">
                                 <source src="section2-2_optimized.mp4" type="video/mp4">
@@ -5369,7 +5421,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="cta-link" id="solCta">Read the trading architecture →</a>
+                <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="cta-link" id="solCta" target="_blank">Read the trading architecture →</a>
             </div>
         </section>
 
@@ -5388,7 +5440,7 @@
                         <span>Paper trading now. Live soon.</span>
                     </div>
 
-                    <a href="#" class="cta-link" id="coreCta">See strategy results →</a>
+                    <a href="https://kr8tiv.web.app/" class="cta-link" id="coreCta" target="_blank">See strategy results →</a>
                 </div>
 
                 <!-- Visuals (Cards) -->
@@ -5652,7 +5704,7 @@
             <div class="public-container">
                 <span class="eyebrow" id="pubEyebrow">Building in Public</span>
                 <h2 class="public-headline" id="pubHeadline">Full transparency.</h2>
-                <p class="public-subhead" id="pubSubhead">This is v0.3. We ship daily.</p>
+                <p class="public-subhead" id="pubSubhead">Pre-alpha. We ship daily.</p>
 
                 <div class="commit-timeline">
                     <div class="timeline-line" id="pubLine"></div>
@@ -5686,9 +5738,9 @@
                 </div>
 
                 <div class="github-cta-row" id="pubCtaRow">
-                    <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="btn-primary" target="_blank">View
+                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="btn-primary" target="_blank">View
                         GitHub</a>
-                    <a href="https://github.com/Matt-Aurora-Ventures/Jarvis/commits/main" class="btn-ghost"
+                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website/commits/main" class="btn-ghost"
                         target="_blank">See Commits</a>
                 </div>
             </div>
@@ -5927,7 +5979,7 @@
                     <h2 class="open-headline" id="openHeadline">No black boxes.</h2>
                     <p class="public-subhead" id="openSubhead">Forkable. Auditable. Community built.</p>
 
-                    <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="btn-primary" id="openCta"
+                    <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="btn-primary" id="openCta"
                         style="margin-top: 20px;">Star on GitHub</a>
 
                     <div class="mit-badge" id="mitBadge">
@@ -6031,7 +6083,7 @@
     <span class="kw">if</span> alpha > THRESHOLD:
         <span class="kw">return</span> Signal.BUY
     <span class="kw">return</span> Signal.HOLD`,
-                    readme: `<span class="kw"># Jarvis v0.3</span>
+                    readme: `<span class="kw"># Jarvis LifeOS</span>
 The operating system for your life.
 <span class="com"># Install</span>
 npm install jarvis-core
@@ -6327,7 +6379,7 @@ jarvis start --daemon`
         <section class="section-final-cta" id="sectionFinal">
             <!-- VIDEO BACKGROUND -->
             <div class="final-video-bg">
-                <video autoplay loop muted playsinline>
+                <video autoplay loop muted playsinline preload="none" class="lazy-video" data-src-mobile="jarvis2_mobile.mp4" data-src-webm="jarvis2_optimized.webm" data-src-mp4="jarvis2_optimized.mp4">
                     <source src="jarvis2_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
                     <source src="jarvis2_optimized.webm" type="video/webm">
                     <source src="jarvis2_optimized.mp4" type="video/mp4">
@@ -6357,13 +6409,13 @@ jarvis start --daemon`
                 <p class="final-subhead" id="finalSubhead">The operating system for your life is waiting.</p>
 
                 <div class="path-grid">
-                    <!-- Card 1: Deploy -->
+                    <!-- Card 1: Try the Sniper -->
                     <div class="path-card" id="cardTry">
                         <div class="path-icon">✨</div>
-                        <h3 class="path-title">Deploy Jarvis</h3>
-                        <p class="path-desc">Run locally. Own your intelligence. Experience v0.3 today.</p>
-                        <a href="https://github.com/Matt-Aurora-Ventures/Jarvis"
-                            class="path-btn path-btn-primary">Initialize v0.3</a>
+                        <h3 class="path-title">Try the Sniper</h3>
+                        <p class="path-desc">Experience the pre-alpha trading terminal. Connect a burner wallet and test autonomous strategies live on Solana.</p>
+                        <a href="https://kr8tiv.web.app/"
+                            class="path-btn path-btn-primary" target="_blank">Launch Pre-Alpha</a>
                     </div>
 
                     <!-- Card 2: Token -->
@@ -6379,7 +6431,7 @@ jarvis start --daemon`
                         <div class="path-icon">🛠️</div>
                         <h3 class="path-title">Upgrade the Core</h3>
                         <p class="path-desc">Fork the repo. Submit PRs. Shape the future of local AI.</p>
-                        <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="path-btn path-btn-ghost">View
+                        <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="path-btn path-btn-ghost">View
                             GitHub</a>
                     </div>
                 </div>
@@ -6388,13 +6440,21 @@ jarvis start --daemon`
                 <footer class="site-footer" id="mainFooter">
                     <div class="footer-logo">JARVIS</div>
                     <div class="footer-links">
-                        <a href="#" class="footer-link">Manifesto</a>
-                        <a href="https://github.com/Matt-Aurora-Ventures/Jarvis" class="footer-link" target="_blank">Documentation</a>
-                        <a href="#" class="footer-link">Tokenomics</a>
-                        <a href="https://x.com/kr8tivai" class="footer-link" target="_blank">Twitter</a>
+                        <a href="#manifesto" class="footer-link">Manifesto</a>
+                        <a href="https://github.com/kr8tiv-io/Jarvis-by-Kr8tiv-Website" class="footer-link" target="_blank">Documentation</a>
+                        <a href="#sectionToken" class="footer-link">Tokenomics</a>
+                        <a href="https://kr8tiv.web.app/" class="footer-link" target="_blank">Trading App</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="https://x.com/kr8tivai" class="footer-social-link" target="_blank" title="X/Twitter">𝕏</a>
+                        <a href="https://t.me/kr8tivaisystems" class="footer-social-link" target="_blank" title="Telegram">✈</a>
+                        <a href="https://github.com/kr8tiv-io" class="footer-social-link" target="_blank" title="GitHub">⌨</a>
+                        <a href="https://dexscreener.com/solana/gnfeekylr79s7jkbippznlkivm1ufqmpnbqs96mxmgqq" class="footer-social-link" target="_blank" title="DexScreener">📊</a>
+                        <a href="https://bags.fm/b/kr8tiv" class="footer-social-link" target="_blank" title="Bags.fm">💰</a>
+                        <a href="https://www.linkedin.com/in/matthaynes88" class="footer-social-link" target="_blank" title="LinkedIn">in</a>
                     </div>
                     <div class="footer-copy">
-                        Built on Solana · Launched on Bags.fm · Open Source
+                        A product of <a href="https://kr8tiv.ai" target="_blank" style="color: #39FF14; text-decoration: none;">kr8tiv AI</a> · Built on Solana · Launched on Bags.fm · Open Source
                     </div>
                 </footer>
             </div>
@@ -7269,7 +7329,7 @@ jarvis start --daemon`
             }, 800);
 
 
-            // --- 2. CANVAS PHYSICS GRID (The "Luminous Lab" Effect) ---
+            // --- 2. CANVAS PHYSICS GRID (The "kr8tiv AI" Effect) ---
             const canvas = document.getElementById('physics-canvas');
             const ctx = canvas.getContext('2d');
 
@@ -8617,6 +8677,56 @@ jarvis start --daemon`
                 });
 
                 console.log('Mobile video optimization applied');
+            }
+        })();
+    </script>
+
+    <!-- Lazy Loading & Intersection Observer for Videos and Images -->
+    <script>
+        (function() {
+            // Add loading="lazy" to all images
+            document.querySelectorAll('img:not([loading])').forEach(function(img) {
+                img.setAttribute('loading', 'lazy');
+            });
+
+            // Intersection Observer for lazy videos
+            if ('IntersectionObserver' in window) {
+                var videoObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            var video = entry.target;
+                            // Video sources are already in HTML, just trigger load
+                            if (video.paused) {
+                                video.load();
+                                video.play().catch(function() {});
+                            }
+                            videoObserver.unobserve(video);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+
+                document.querySelectorAll('.lazy-video').forEach(function(v) {
+                    videoObserver.observe(v);
+                });
+            }
+
+            // Pause off-screen Three.js animations via visibility observer
+            if ('IntersectionObserver' in window) {
+                var threeObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        var section = entry.target;
+                        if (entry.isIntersecting) {
+                            section.dataset.visible = 'true';
+                        } else {
+                            section.dataset.visible = 'false';
+                        }
+                    });
+                }, { rootMargin: '100px' });
+
+                var threeSections = document.querySelectorAll('#sectionUniverse, #sectionToken, .token-visual-container');
+                threeSections.forEach(function(s) {
+                    threeObserver.observe(s);
+                });
             }
         })();
     </script>
